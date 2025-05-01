@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,19 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Moroccan-inspired colors
+				morocco: {
+					'terracotta': '#C35831',
+					'blue': '#1A6B8F',
+					'amber': '#D6A756',
+					'teal': '#257275',
+					'cream': '#F5EFE0',
+					'olive': '#5C6F45',
+					'rust': '#A64B2A',
+					'navy': '#0F3E5F',
+					'sand': '#E0D1AB',
+					'charcoal': '#34403A',
 				}
 			},
 			borderRadius: {
@@ -84,11 +98,37 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1', 
+						transform: 'translateY(0)'
+					}
+				},
+				'slide-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateX(-10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateX(0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.5s ease-out',
+				'slide-in': 'slide-in 0.5s ease-out',
+			},
+			fontFamily: {
+				'heading': ['"Playfair Display"', 'serif'],
+				'body': ['"Raleway"', 'sans-serif'],
 			}
 		}
 	},
