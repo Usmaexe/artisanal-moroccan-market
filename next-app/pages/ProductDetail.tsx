@@ -166,6 +166,15 @@ const ProductDetail: React.FC = () => {
     }
   };
 
+  // Create a modified product object that includes an image property for AddToCart
+  const productForCart = product ? {
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.images[0], // Use the first image from the images array
+    slug: product.slug
+  } : null;
+
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
@@ -273,7 +282,7 @@ const ProductDetail: React.FC = () => {
 
             {/* Add to Cart */}
             <div className="flex items-start gap-4 mb-8">
-              <AddToCart product={product} className="flex-1" />
+              {productForCart && <AddToCart product={productForCart} className="flex-1" />}
               <button
                 onClick={toggleWishlist}
                 className="flex items-center justify-center h-12 w-12 border border-gray-300 rounded-md hover:bg-gray-100"
