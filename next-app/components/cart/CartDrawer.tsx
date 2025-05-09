@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Image from 'next/image';
 import { X, ShoppingBag, Minus, Plus, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
@@ -63,18 +64,19 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
               <div className="space-y-4">
                 {items.map((item) => (
                   <div key={item.id} className="flex items-center space-x-4">
-                    {/* Product Image */}
-                    <Link to={`/product/${item.slug}`} onClick={onClose} className="w-20 h-20 flex-shrink-0">
-                      <img
+                    {/* Product Image */}                    <Link href={`/product/${item.slug}`} onClick={onClose} className="w-20 h-20 flex-shrink-0 relative">
+                      <Image
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-full object-cover rounded-md"
+                        fill
+                        sizes="80px"
+                        className="object-cover rounded-md"
                       />
                     </Link>
                     
                     {/* Product Details */}
                     <div className="flex-1">
-                      <Link to={`/product/${item.slug}`} onClick={onClose} className="font-medium text-gray-800 hover:text-morocco-terracotta line-clamp-2">
+                      <Link href={`/product/${item.slug}`} onClick={onClose} className="font-medium text-gray-800 hover:text-morocco-terracotta line-clamp-2">
                         {item.name}
                       </Link>
                       <p className="text-morocco-terracotta font-medium mt-1">
@@ -129,12 +131,12 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
               {/* Checkout Buttons */}
               <div className="space-y-3">
                 <Button asChild className="w-full btn-primary">
-                  <Link to="/checkout" onClick={onClose}>
+                  <Link href="/checkout" onClick={onClose}>
                     Proceed to Checkout
                   </Link>
                 </Button>
                 <Button asChild variant="outline" className="w-full btn-outline">
-                  <Link to="/cart" onClick={onClose}>
+                  <Link href="/cart" onClick={onClose}>
                     View Cart
                   </Link>
                 </Button>

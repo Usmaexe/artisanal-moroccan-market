@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Star, Truck, Shield, Repeat } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { ArrowLeft, ArrowRight, Star, Truck, Shield, Repeat } from 'lucide-react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '../../../../components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../../components/ui/tabs';
 import Image from 'next/image';
@@ -76,7 +77,7 @@ const relatedProducts = [
 
 const ProductDetail = () => {
   const params = useParams();
-  const { slug } = params;
+  const slug = params.slug;
   
   // In a real app, you would fetch product data based on the slug
   // For now, we'll use the mock product
@@ -102,27 +103,30 @@ const ProductDetail = () => {
       {/* Product Details */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
         {/* Product Images */}
-        <div className="space-y-4">
-          <div className="aspect-square bg-white rounded-lg overflow-hidden">
-            <img
+        <div className="space-y-4">          <div className="aspect-square bg-white rounded-lg overflow-hidden relative">
+            <Image
               src={product.images[selectedImage]}
               alt={product.name}
-              className="w-full h-full object-contain"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-contain"
+              priority
             />
           </div>
           <div className="grid grid-cols-4 gap-2">
-            {product.images.map((image, index) => (
-              <div 
+            {product.images.map((image, index) => (              <div 
                 key={index} 
-                className={`aspect-square bg-white rounded-lg overflow-hidden cursor-pointer border-2 ${
+                className={`aspect-square bg-white rounded-lg overflow-hidden cursor-pointer border-2 relative ${
                   selectedImage === index ? 'border-morocco-blue' : 'border-transparent'
                 }`}
                 onClick={() => setSelectedImage(index)}
               >
-                <img
+                <Image
                   src={image}
                   alt={`${product.name} ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="25vw"
+                  className="object-cover"
                 />
               </div>
             ))}

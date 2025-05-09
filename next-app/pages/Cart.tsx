@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Layout from '../components/layout/Layout';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -28,10 +28,9 @@ const Cart: React.FC = () => {
         {items.length === 0 ? (
           <div className="text-center py-16">
             <ShoppingBag className="mx-auto h-16 w-16 text-gray-300 mb-4" />
-            <h2 className="text-xl font-heading font-medium mb-4">Your cart is empty</h2>
-            <p className="text-gray-500 mb-8">Looks like you haven't added any products yet.</p>
+            <h2 className="text-xl font-heading font-medium mb-4">Your cart is empty</h2>            <p className="text-gray-500 mb-8">Looks like you haven't added any products yet.</p>
             <Button asChild className="btn-primary">
-              <Link to="/">Continue Shopping</Link>
+              <Link href="/">Continue Shopping</Link>
             </Button>
           </div>
         ) : (
@@ -49,17 +48,15 @@ const Cart: React.FC = () => {
                 <div className="divide-y">
                   {items.map((item) => (
                     <div key={item.id} className="p-4 md:grid md:grid-cols-12 md:gap-4 md:items-center">
-                      {/* Product Info */}
-                      <div className="md:col-span-6 flex items-center gap-4">
-                        <Link to={`/product/${item.slug}`} className="w-20 h-20 flex-shrink-0">
+                      {/* Product Info */}                      <div className="md:col-span-6 flex items-center gap-4">
+                        <Link href={`/product/${item.slug}`} className="w-20 h-20 flex-shrink-0">
                           <img
                             src={item.image}
                             alt={item.name}
                             className="w-full h-full object-cover rounded"
-                          />
-                        </Link>
+                          />                        </Link>
                         <div>
-                          <Link to={`/product/${item.slug}`} className="font-medium text-morocco-charcoal hover:text-morocco-terracotta">
+                          <Link href={`/product/${item.slug}`} className="font-medium text-morocco-charcoal hover:text-morocco-terracotta">
                             {item.name}
                           </Link>
                           <div className="md:hidden mt-2 text-sm text-gray-500">
@@ -117,9 +114,8 @@ const Cart: React.FC = () => {
                     onClick={clearCart}
                   >
                     Clear Cart
-                  </Button>
-                  <Button asChild>
-                    <Link to="/">Continue Shopping</Link>
+                  </Button>                  <Button asChild>
+                    <Link href="/">Continue Shopping</Link>
                   </Button>
                 </div>
               </div>
@@ -152,10 +148,8 @@ const Cart: React.FC = () => {
                 <div className="flex justify-between text-lg font-medium mb-6">
                   <span>Total</span>
                   <span className="text-morocco-terracotta">${totalCost.toFixed(2)}</span>
-                </div>
-
-                <Button asChild className="btn-primary w-full mb-4">
-                  <Link to="/checkout">Proceed to Checkout</Link>
+                </div>                <Button asChild className="btn-primary w-full mb-4">
+                  <Link href="/checkout">Proceed to Checkout</Link>
                 </Button>
 
                 <div className="bg-morocco-cream/30 rounded p-3 text-sm text-gray-700">

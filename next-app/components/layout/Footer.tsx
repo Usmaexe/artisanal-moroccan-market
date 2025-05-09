@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Facebook, Instagram, Twitter, Mail } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -18,17 +19,16 @@ const Footer: React.FC = () => {
             <h3 className="font-heading text-xl font-semibold mb-4">MoroccanArtisans</h3>
             <p className="text-gray-300 mb-4">
               Connecting global customers with authentic Moroccan craftsmanship. Every purchase supports traditional artisans and preserves cultural heritage.
-            </p>
-            <div className="flex space-x-3">
-              <a href="#" className="text-white hover:text-morocco-amber transition-colors">
+            </p>            <div className="flex space-x-3">
+              <Link href="#" className="text-white hover:text-morocco-amber transition-colors">
                 <Facebook />
-              </a>
-              <a href="#" className="text-white hover:text-morocco-amber transition-colors">
+              </Link>
+              <Link href="#" className="text-white hover:text-morocco-amber transition-colors">
                 <Instagram />
-              </a>
-              <a href="#" className="text-white hover:text-morocco-amber transition-colors">
+              </Link>
+              <Link href="#" className="text-white hover:text-morocco-amber transition-colors">
                 <Twitter />
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -119,12 +119,19 @@ const Footer: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
               &copy; {currentYear} MoroccanArtisans. All rights reserved.
-            </p>
-            <div className="flex items-center space-x-4">
-              <img src="https://via.placeholder.com/40x25" alt="Visa" className="h-6" />
-              <img src="https://via.placeholder.com/40x25" alt="Mastercard" className="h-6" />
-              <img src="https://via.placeholder.com/40x25" alt="PayPal" className="h-6" />
-              <img src="https://via.placeholder.com/40x25" alt="Apple Pay" className="h-6" />
+            </p>            <div className="flex items-center space-x-4">
+              <div className="h-6 w-10 relative">
+                <Image src="https://via.placeholder.com/40x25" alt="Visa" width={40} height={25} />
+              </div>
+              <div className="h-6 w-10 relative">
+                <Image src="https://via.placeholder.com/40x25" alt="Mastercard" width={40} height={25} />
+              </div>
+              <div className="h-6 w-10 relative">
+                <Image src="https://via.placeholder.com/40x25" alt="PayPal" width={40} height={25} />
+              </div>
+              <div className="h-6 w-10 relative">
+                <Image src="https://via.placeholder.com/40x25" alt="Apple Pay" width={40} height={25} />
+              </div>
             </div>
           </div>
         </div>

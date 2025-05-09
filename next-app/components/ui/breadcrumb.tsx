@@ -29,14 +29,21 @@ BreadcrumbList.displayName = "BreadcrumbList"
 
 const BreadcrumbItem = React.forwardRef<
   HTMLLIElement,
-  React.ComponentPropsWithoutRef<"li">
->(({ className, ...props }, ref) => (
-  <li
-    ref={ref}
-    className={cn("inline-flex items-center gap-1.5", className)}
-    {...props}
-  />
-))
+  React.ComponentPropsWithoutRef<"li"> & {
+    isCurrentPage?: boolean
+  }
+>(({ className, isCurrentPage, ...props }, ref) => {
+  // Filter out isCurrentPage prop so it doesn't get passed to the DOM element
+  const filteredProps = { ...props };
+  
+  return (
+    <li
+      ref={ref}
+      className={cn("inline-flex items-center gap-1.5", className)}
+      {...filteredProps}
+    />
+  );
+})
 BreadcrumbItem.displayName = "BreadcrumbItem"
 
 const BreadcrumbLink = React.forwardRef<

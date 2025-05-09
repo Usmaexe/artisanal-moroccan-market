@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import Layout from '../components/layout/Layout';
 import AddToCart from '../components/products/AddToCart';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
@@ -7,6 +7,7 @@ import { Heart } from 'lucide-react';
 import ProductGrid from '../components/products/ProductGrid';
 import { ProductCardProps } from '../components/products/ProductCard';
 
+import Link from 'next/link';
 // Demo product data - would be fetched from API in a real app
 const products: Record<string, {
   id: number;
@@ -177,11 +178,10 @@ const ProductDetail: React.FC = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
-        {/* Breadcrumbs */}
+      <div className="container mx-auto px-4 py-8">        {/* Breadcrumbs */}
         <div className="text-sm mb-6 text-gray-500">
-          <a href="/" className="hover:text-morocco-terracotta">Home</a> / 
-          <a href={`/category/${product.category.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-morocco-terracotta"> {product.category}</a> / 
+          <Link href="/" className="hover:text-morocco-terracotta">Home</Link> / 
+          <Link href={`/category/${product.category.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-morocco-terracotta"> {product.category}</Link> / 
           <span className="text-gray-700"> {product.name}</span>
         </div>
 
