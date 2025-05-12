@@ -1,5 +1,8 @@
 
+"use client";
+
 import React from 'react';
+import Image from 'next/image';
 
 interface Testimonial {
   id: number;
@@ -75,18 +78,17 @@ const TestimonialsSection: React.FC = () => {
                     />
                   </svg>
                 ))}
-              </div>
+              </div>              {/* Testimonial Text */}
+              <p className="text-gray-700 italic mb-6 flex-grow">&ldquo;{testimonial.text}&rdquo;</p>
 
-              {/* Testimonial Text */}
-              <p className="text-gray-700 italic mb-6 flex-grow">"{testimonial.text}"</p>
-
-              {/* Author Info */}
-              <div className="flex items-center">
-                <div className="h-12 w-12 rounded-full overflow-hidden mr-4">
-                  <img 
+              {/* Author Information */}
+              <div className="flex items-center">                <div className="h-12 w-12 rounded-full overflow-hidden mr-4 relative">
+                  <Image 
                     src={testimonial.image} 
                     alt={testimonial.author}
-                    className="h-full w-full object-cover" 
+                    fill
+                    sizes="48px"
+                    className="object-cover" 
                   />
                 </div>
                 <div>

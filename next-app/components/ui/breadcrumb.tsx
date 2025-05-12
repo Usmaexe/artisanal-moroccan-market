@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { ChevronRight, MoreHorizontal } from "lucide-react"
@@ -33,14 +35,18 @@ const BreadcrumbItem = React.forwardRef<
     isCurrentPage?: boolean
   }
 >(({ className, isCurrentPage, ...props }, ref) => {
-  // Filter out isCurrentPage prop so it doesn't get passed to the DOM element
-  const filteredProps = { ...props };
+  // Use aria-current attribute if this is the current page
+  // but don't pass isCurrentPage prop to the DOM element
+  const domProps = {...props};
+  if (isCurrentPage) {
+    domProps["aria-current"] = "page";
+  }
   
   return (
     <li
       ref={ref}
       className={cn("inline-flex items-center gap-1.5", className)}
-      {...filteredProps}
+      {...domProps}
     />
   );
 })

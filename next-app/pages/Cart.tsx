@@ -1,5 +1,8 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Layout from '../components/layout/Layout';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -48,12 +51,13 @@ const Cart: React.FC = () => {
                 <div className="divide-y">
                   {items.map((item) => (
                     <div key={item.id} className="p-4 md:grid md:grid-cols-12 md:gap-4 md:items-center">
-                      {/* Product Info */}                      <div className="md:col-span-6 flex items-center gap-4">
-                        <Link href={`/product/${item.slug}`} className="w-20 h-20 flex-shrink-0">
-                          <img
+                      {/* Product Info */}                      <div className="md:col-span-6 flex items-center gap-4">                        <Link href={`/product/${item.slug}`} className="w-20 h-20 flex-shrink-0 relative">
+                          <Image
                             src={item.image}
                             alt={item.name}
-                            className="w-full h-full object-cover rounded"
+                            fill
+                            sizes="80px"
+                            className="object-cover rounded"
                           />                        </Link>
                         <div>
                           <Link href={`/product/${item.slug}`} className="font-medium text-morocco-charcoal hover:text-morocco-terracotta">
@@ -72,19 +76,21 @@ const Cart: React.FC = () => {
 
                       {/* Quantity */}
                       <div className="md:col-span-2 md:text-center mt-4 md:mt-0">
-                        <div className="inline-flex items-center">
-                          <button
+                        <div className="inline-flex items-center">                          <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
                             className="text-gray-500 hover:text-morocco-terracotta border border-gray-300 rounded-l-md p-1"
+                            aria-label="Decrease quantity"
+                            title="Decrease quantity"
                           >
                             <Minus size={14} />
                           </button>
                           <span className="px-4 py-1 border-y border-gray-300">
                             {item.quantity}
-                          </span>
-                          <button
+                          </span>                          <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             className="text-gray-500 hover:text-morocco-terracotta border border-gray-300 rounded-r-md p-1"
+                            aria-label="Increase quantity"
+                            title="Increase quantity"
                           >
                             <Plus size={14} />
                           </button>

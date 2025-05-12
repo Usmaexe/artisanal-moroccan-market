@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Layout from '../components/layout/Layout';
@@ -6,8 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
 import { Heart } from 'lucide-react';
 import ProductGrid from '../components/products/ProductGrid';
 import { ProductCardProps } from '../components/products/ProductCard';
-
 import Link from 'next/link';
+import Image from 'next/image';
 // Demo product data - would be fetched from API in a real app
 const products: Record<string, {
   id: number;
@@ -131,7 +133,8 @@ const relatedProducts: ProductCardProps[] = [
 ];
 
 const ProductDetail: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const params = useParams();
+  const slug = params?.slug as string;
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isWishlist, setIsWishlist] = useState(false);
   
@@ -187,29 +190,37 @@ const ProductDetail: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Images */}
-          <div>
-            <div className="mb-4 aspect-square overflow-hidden rounded-lg bg-gray-100">
-              <img
+          <div>            <div className="mb-4 aspect-square overflow-hidden rounded-lg bg-gray-100 relative">
+              <Image
                 src={product.images[activeImageIndex]}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+                priority
               />
             </div>
 
             <div className="grid grid-cols-4 gap-2">
-              {product.images.map((image, index) => (
-                <button
+              {product.images.map((image, index) => (                <button
                   key={index}
-                  className={`aspect-square rounded-md overflow-hidden border-2 ${
+                  className={`aspect-square rounded-md overflow-hidden border-2 relative ${
                     index === activeImageIndex ? 'border-morocco-terracotta' : 'border-transparent'
                   }`}
                   onClick={() => setActiveImageIndex(index)}
+                  title={`View image ${index + 1} of ${product.name}`}
+                  aria-label={`View image ${index + 1} of ${product.name}`}
+                  aria-pressed={index === activeImageIndex ? "true" : "false"}
                 >
-                  <img
-                    src={image}
-                    alt={`${product.name} view ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={image}
+                      alt={`${product.name} view ${index + 1}`}
+                      fill
+                      sizes="100px"
+                      className="object-cover"
+                    />
+                  </div>
                 </button>
               ))}
             </div>

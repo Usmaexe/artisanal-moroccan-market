@@ -120,17 +120,17 @@ const Footer: React.FC = () => {
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
               &copy; {currentYear} MoroccanArtisans. All rights reserved.
             </p>            <div className="flex items-center space-x-4">
-              <div className="h-6 w-10 relative">
-                <Image src="https://via.placeholder.com/40x25" alt="Visa" width={40} height={25} />
+              <div className="relative h-6 w-10">
+                <Image src="https://via.placeholder.com/40x25" alt="Visa" fill sizes="40px" className="object-contain" />
               </div>
-              <div className="h-6 w-10 relative">
-                <Image src="https://via.placeholder.com/40x25" alt="Mastercard" width={40} height={25} />
+              <div className="relative h-6 w-10">
+                <Image src="https://via.placeholder.com/40x25" alt="Mastercard" fill sizes="40px" className="object-contain" />
               </div>
-              <div className="h-6 w-10 relative">
-                <Image src="https://via.placeholder.com/40x25" alt="PayPal" width={40} height={25} />
+              <div className="relative h-6 w-10">
+                <Image src="https://via.placeholder.com/40x25" alt="PayPal" fill sizes="40px" className="object-contain" />
               </div>
-              <div className="h-6 w-10 relative">
-                <Image src="https://via.placeholder.com/40x25" alt="Apple Pay" width={40} height={25} />
+              <div className="relative h-6 w-10">
+                <Image src="https://via.placeholder.com/40x25" alt="Apple Pay" fill sizes="40px" className="object-contain" />
               </div>
             </div>
           </div>

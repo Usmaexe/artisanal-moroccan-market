@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -39,6 +41,8 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
           <button 
             className="text-morocco-charcoal hover:text-morocco-terracotta transition-colors" 
             onClick={onClose}
+            aria-label="Close cart"
+            title="Close cart"
           >
             <X size={24} />
           </button>
@@ -49,10 +53,10 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
           <div className="flex flex-col items-center justify-center h-[calc(100vh-14rem)] p-6 text-center">
             <ShoppingBag className="h-16 w-16 text-gray-300 mb-4" />
             <h3 className="font-heading text-xl font-medium mb-2">Your cart is empty</h3>
-            <p className="text-gray-500 mb-6">Looks like you haven't added any products yet.</p>
-            <Button 
+            <p className="text-gray-500 mb-6">Looks like you haven't added any products yet.</p>            <Button 
               onClick={onClose} 
               className="btn-primary"
+              aria-label="Continue shopping and close cart"
             >
               Continue Shopping
             </Button>
@@ -64,13 +68,13 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
               <div className="space-y-4">
                 {items.map((item) => (
                   <div key={item.id} className="flex items-center space-x-4">
-                    {/* Product Image */}                    <Link href={`/product/${item.slug}`} onClick={onClose} className="w-20 h-20 flex-shrink-0 relative">
+                    {/* Product Image */}                    <Link href={`/product/${item.slug}`} onClick={onClose} className="w-20 h-20 flex-shrink-0 relative rounded-md overflow-hidden">
                       <Image
                         src={item.image}
                         alt={item.name}
                         fill
                         sizes="80px"
-                        className="object-cover rounded-md"
+                        className="object-cover"
                       />
                     </Link>
                     

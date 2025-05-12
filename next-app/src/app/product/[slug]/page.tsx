@@ -75,9 +75,8 @@ const relatedProducts = [
   }
 ];
 
-const ProductDetail = () => {
-  const params = useParams();
-  const slug = params.slug;
+const ProductDetail = () => {  const params = useParams();
+  const slug = params?.slug as string;
   
   // In a real app, you would fetch product data based on the slug
   // For now, we'll use the mock product

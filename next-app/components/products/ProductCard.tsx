@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Heart } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Badge } from '../ui/badge';
@@ -49,12 +50,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <div className={cn("moroccan-card group", className)}>
       <Link href={`/product/${slug}`} className="block">
         <div className="relative overflow-hidden">
-          {/* Product image */}
-          <div className="aspect-square relative overflow-hidden">
-            <img 
+          {/* Product image */}          <div className="aspect-square relative overflow-hidden">
+            <Image 
               src={image} 
               alt={name}
-              className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" 
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105" 
             />
           </div>
 
@@ -71,10 +73,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
             )}
           </div>
 
-          {/* Wishlist button */}
-          <button 
+          {/* Wishlist button */}          <button 
             onClick={toggleWishlist}
             className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow-md hover:bg-morocco-cream transition-colors"
+            aria-label={isWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            title={isWishlist ? "Remove from wishlist" : "Add to wishlist"}
           >
             <Heart 
               size={18} 
@@ -86,7 +89,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </button>
 
           {/* Quick shop button that appears on hover */}
-          <div className="absolute bottom-0 left-0 right-0 bg-morocco-terracotta opacity-0 group-hover:opacity-100 transition-opacity translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          <div className="absolute bottom-0 left-0 right-0 bg-morocco-terracotta opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
             <Button 
               variant="ghost" 
               className="w-full text-white hover:bg-morocco-rust hover:text-white rounded-none py-2"

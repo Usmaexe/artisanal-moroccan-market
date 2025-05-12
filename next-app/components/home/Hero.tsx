@@ -1,5 +1,8 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '../ui/button';
 
 const Hero: React.FC = () => {
@@ -27,35 +30,40 @@ const Hero: React.FC = () => {
           </div>
           <div className="order-1 lg:order-2">
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <div className="overflow-hidden rounded-lg shadow-lg hover-translate">
-                  <img 
+              <div className="space-y-4">                <div className="overflow-hidden rounded-lg shadow-lg hover-translate relative h-48">
+                  <Image 
                     src="https://images.unsplash.com/photo-1590730843887-02dd269c9db9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1935&q=80" 
                     alt="Moroccan pottery" 
-                    className="w-full h-48 object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover"
                   />
-                </div>
-                <div className="overflow-hidden rounded-lg shadow-lg hover-translate">
-                  <img 
+                </div>                <div className="overflow-hidden rounded-lg shadow-lg hover-translate relative h-64">
+                  <Image 
                     src="https://images.unsplash.com/photo-1598030304671-5aa1d6f13fdd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
                     alt="Moroccan rug" 
-                    className="w-full h-64 object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
                   />
                 </div>
-              </div>
-              <div className="space-y-4 mt-12">
-                <div className="overflow-hidden rounded-lg shadow-lg hover-translate">
-                  <img 
+              </div>              <div className="space-y-4 mt-12">
+                <div className="overflow-hidden rounded-lg shadow-lg hover-translate relative h-64">
+                  <Image 
                     src="https://images.unsplash.com/photo-1584057048478-b2cff355354c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
                     alt="Moroccan lanterns" 
-                    className="w-full h-64 object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
                   />
                 </div>
-                <div className="overflow-hidden rounded-lg shadow-lg hover-translate">
-                  <img 
+                <div className="overflow-hidden rounded-lg shadow-lg hover-translate relative h-48">
+                  <Image 
                     src="https://images.unsplash.com/photo-1598030343249-98c53eb0b241?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
                     alt="Moroccan baskets" 
-                    className="w-full h-48 object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
                   />
                 </div>
               </div>

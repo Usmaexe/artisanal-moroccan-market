@@ -1,5 +1,8 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Category {
   name: string;
@@ -52,12 +55,13 @@ const CategoryShowcase: React.FC = () => {
               key={category.slug} 
               href={`/category/${category.slug}`}
               className="group relative overflow-hidden rounded-lg shadow-md hover-translate"
-            >
-              <div className="aspect-square">
-                <img 
+            >              <div className="aspect-square relative">
+                <Image 
                   src={category.image} 
                   alt={category.name} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-5 text-white">

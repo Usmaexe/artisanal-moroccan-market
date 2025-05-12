@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import Hero from '../../components/home/Hero'; // Ensure the file exists at this path or adjust the path accordingly
+import Hero from '../../components/home/Hero';
 import CategoryShowcase from '../../components/home/CategoryShowcase';
 import FeaturedProducts from '../../components/home/FeaturedProducts';
 import ArtisanStory from '../../components/home/ArtisanStory';
@@ -20,7 +20,7 @@ export default function Home() {
       <Hero />
       <CategoryShowcase />
       <FeaturedProducts />
-      <ArtisanStory />
+      {/* <ArtisanStory /> */}
       <TestimonialsSection />
       <Newsletter />
       

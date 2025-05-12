@@ -4,9 +4,10 @@ import React from 'react';
 import { useCart } from '../../../context/CartContext';
 import { Trash2, Minus, Plus, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '../../../components/ui/button';
 
-const CartPage: React.FC = () => {
+export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, subtotal } = useCart();
   
   if (items.length === 0) {
@@ -44,12 +45,13 @@ const CartPage: React.FC = () => {
             
             <div className="divide-y divide-gray-200">
               {items.map(item => (
-                <div key={item.id} className="flex py-6">
-                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md">
-                    <img
+                <div key={item.id} className="flex py-6">                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md relative">
+                    <Image
                       src={item.image}
                       alt={item.name}
-                      className="h-full w-full object-cover object-center"
+                      fill
+                      sizes="96px"
+                      className="object-cover object-center"
                     />
                   </div>
                   
@@ -138,11 +140,16 @@ const CartPage: React.FC = () => {
           </div>
           
           <div className="p-6">
-            <h3 className="font-medium mb-3">Accepted Payment Methods</h3>
-            <div className="flex space-x-3">
-              <img src="https://via.placeholder.com/40x25" alt="Visa" className="h-6" />
-              <img src="https://via.placeholder.com/40x25" alt="Mastercard" className="h-6" />
-              <img src="https://via.placeholder.com/40x25" alt="PayPal" className="h-6" />
+            <h3 className="font-medium mb-3">Accepted Payment Methods</h3>            <div className="flex space-x-3">
+              <div className="relative h-6 w-10">
+                <Image src="https://via.placeholder.com/40x25" alt="Visa" fill sizes="40px" className="object-contain" />
+              </div>
+              <div className="relative h-6 w-10">
+                <Image src="https://via.placeholder.com/40x25" alt="Mastercard" fill sizes="40px" className="object-contain" />
+              </div>
+              <div className="relative h-6 w-10">
+                <Image src="https://via.placeholder.com/40x25" alt="PayPal" fill sizes="40px" className="object-contain" />
+              </div>
             </div>
           </div>
         </div>
@@ -155,6 +162,4 @@ const CartPage: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default CartPage;
+}
