@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getProductBySlug, getProducts } from "@/data/products";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { getProductBySlug, getProducts } from "@/data/products";
+import AddToCartButton from "@/components/cart/AddToCartButton";
 
 interface ProductPageProps {
   params: {
@@ -165,9 +166,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
               {/* CTA */}
               <div className="mt-8 space-y-4">
-                <button className="bg-amber-600 hover:bg-amber-700 text-white py-3 px-6 rounded-md font-medium w-full flex items-center justify-center">
-                  Add to Cart
-                </button>
+                <AddToCartButton product={product} className="w-full" />
+                
                 <button className="border border-amber-600 text-amber-600 hover:bg-amber-50 py-3 px-6 rounded-md font-medium w-full flex items-center justify-center">
                   Add to Wishlist
                 </button>
@@ -205,4 +205,4 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </div>
     </div>
   );
-} 
+}
