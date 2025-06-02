@@ -1,17 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/lib/auth/AuthContext";
 import Link from "next/link";
 import { ArrowLeft, Save } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { toast } from "react-hot-toast";
 
-export default function NewProduct() {
+// Types
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  stock: number;
+  artisanId: string;
+  status: string;
+}
+
+export default function EditProduct() {
   const { user } = useAuth();
   const router = useRouter();
+  const params = useParams();
+  const productId = params.productId as string;
   
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -23,6 +38,60 @@ export default function NewProduct() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Mock product data - in a real app, this would come from an API
+  const mockProducts: Product[] = [
+    {
+      id: "p1",
+      name: "Handmade Ceramic Tajine",
+      description: "Authentic handmade ceramic tajine, perfect for traditional Moroccan cooking. Each piece is hand-painted with traditional designs.",
+      price: 89.99,
+      category: "Kitchen",
+      artisanId: "a1",
+      stock: 15,
+      status: "Active",
+    },
+    {
+      id: "p2",
+      name: "Moroccan Leather Pouf",
+      description: "Handcrafted genuine leather pouf, made using traditional techniques. A beautiful addition to any living space.",
+      price: 129.99,
+      category: "Home Decor",
+      artisanId: "a2",
+      stock: 8,
+      status: "Active",
+    },
+    {
+      id: "p3",
+      name: "Hand-woven Berber Carpet",
+      description: "Authentic Berber carpet, hand-woven by skilled artisans using traditional patterns and natural dyes.",
+      price: 349.99,
+      category: "Home Decor",
+      artisanId: "a3",
+      stock: 3,
+      status: "Low Stock",
+    },
+    {
+      id: "p4",
+      name: "Argan Oil Body Wash",
+      description: "Luxurious body wash made with pure Moroccan argan oil. Moisturizes and nourishes the skin.",
+      price: 24.99,
+      category: "Beauty",
+      artisanId: "a4",
+      stock: 42,
+      status: "Active",
+    },
+    {
+      id: "p5",
+      name: "Moroccan Brass Lantern",
+      description: "Intricately designed brass lantern, handcrafted by skilled artisans. Creates beautiful light patterns when lit.",
+      price: 79.99,
+      category: "Lighting",
+      artisanId: "a5",
+      stock: 11,
+      status: "Active",
+    },
+  ];
 
   const categories = [
     "Kitchen", 
@@ -41,6 +110,43 @@ export default function NewProduct() {
     { id: "a4", name: "Amina El Mansouri" },
     { id: "a5", name: "Youssef Hakimi" }
   ];
+
+  // Fetch product data
+  useEffect(() => {
+    // In a real app, this would be an API call
+    const fetchProduct = () => {
+      setIsLoading(true);
+      try {
+        // Find product by ID from our mock data
+        const product = mockProducts.find(p => p.id === productId);
+        
+        if (product) {
+          setFormData({
+            name: product.name,
+            description: product.description,
+            price: product.price.toString(),
+            category: product.category,
+            stock: product.stock.toString(),
+            artisanId: product.artisanId,
+            status: product.status
+          });
+        } else {
+          // Product not found
+          toast.error("Product not found");
+          router.push("/account/admin/products");
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        toast.error("Failed to load product details");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (productId) {
+      fetchProduct();
+    }
+  }, [productId, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -83,20 +189,37 @@ export default function NewProduct() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateForm()) {
-      // In a real app, this would call an API endpoint
-      console.log("Submitting product:", formData);
+      // In a real app, this would call an API endpoint with a PATCH request
+      console.log("Updating product:", { id: productId, ...formData });
       
       // Show success notification
-      toast.success("Product created successfully!");
+      toast.success("Product updated successfully!");
       
       // Redirect back to products list
       router.push("/account/admin/products");
     }
   };
+
+  if (isLoading) {
+    return (
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <div className="bg-amber-50 min-h-screen py-10">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto">
+              <div className="bg-white rounded-lg shadow-md p-6 flex justify-center items-center h-64">
+                <div className="text-amber-600">Loading product information...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ProtectedRoute>
+    );
+  }
 
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
@@ -111,8 +234,8 @@ export default function NewProduct() {
                 <ArrowLeft className="h-5 w-5 text-amber-600" />
               </Link>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Add New Product</h1>
-                <p className="text-gray-600 mt-1">Create a new product listing</p>
+                <h1 className="text-3xl font-bold text-gray-900">Edit Product</h1>
+                <p className="text-gray-600 mt-1">Update product information</p>
               </div>
             </div>
 
@@ -224,6 +347,7 @@ export default function NewProduct() {
                         <option value="Active">Active</option>
                         <option value="Draft">Draft</option>
                         <option value="Out of Stock">Out of Stock</option>
+                        <option value="Low Stock">Low Stock</option>
                       </select>
                     </div>
                   </div>
@@ -262,7 +386,7 @@ export default function NewProduct() {
                     className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 flex items-center"
                   >
                     <Save className="h-4 w-4 mr-2" />
-                    Save Product
+                    Update Product
                   </button>
                 </div>
               </form>
@@ -272,4 +396,4 @@ export default function NewProduct() {
       </div>
     </ProtectedRoute>
   );
-} 
+}

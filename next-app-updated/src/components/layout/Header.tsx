@@ -92,7 +92,7 @@ const Header = () => {
             {user ? (
               <div className="relative">
                 <button 
-                  className="flex items-center space-x-2 text-gray-700 hover:text-amber-600 focus:outline-none"
+                  className="flex items-center space-x-2 text-gray-700 hover:text-amber-600 focus:outline-none cursor-pointer"
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                 >
                   <div className="relative w-8 h-8 rounded-full overflow-hidden border border-gray-300">

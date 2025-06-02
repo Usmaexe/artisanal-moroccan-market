@@ -83,9 +83,9 @@ export default function AdminDashboard() {
                   </div>
                 </div>
                 <div>
-                  <p><span className="font-medium">Name:</span> {user?.name}</p>
-                  <p><span className="font-medium">Email:</span> {user?.email}</p>
-                  <p><span className="font-medium">Role:</span> <span className="capitalize">{user?.role}</span></p>
+                  <p className="font-medium text-amber-800"><span className="font-bold text-amber-800">Name:</span> {user?.name}</p>
+                  <p className="font-medium text-amber-800"><span className="font-bold text-amber-800">Email:</span> {user?.email}</p>
+                  <p className="font-medium text-amber-800"><span className="font-bold text-amber-800">Role:</span> <span className="capitalize">{user?.role}</span></p>
                 </div>
               </div>
             </div>
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
                           <span className="font-medium text-amber-700">JD</span>
                         </div>
                         <div>
-                          <p className="font-medium">John Doe</p>
+                          <p className="font-bold text-amber-800">John Doe</p>
                           <p className="text-xs text-gray-500">customer</p>
                         </div>
                       </div>
@@ -142,7 +142,7 @@ export default function AdminDashboard() {
                           <span className="font-medium text-amber-700">SL</span>
                         </div>
                         <div>
-                          <p className="font-medium">Sarah Lee</p>
+                          <p className="font-bold text-amber-800">Sarah Lee</p>
                           <p className="text-xs text-gray-500">artisan</p>
                         </div>
                       </div>
@@ -161,21 +161,21 @@ export default function AdminDashboard() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center p-3 bg-amber-50 rounded-md">
                       <div>
-                        <p className="font-medium">#ORD-2023-1568</p>
+                        <p className="font-medium text-amber-800">#ORD-2023-1568</p>
                         <p className="text-xs text-gray-500">April 15, 2023</p>
                       </div>
                       <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Pending</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-amber-50 rounded-md">
                       <div>
-                        <p className="font-medium">#ORD-2023-1567</p>
+                        <p className="font-medium text-amber-800">#ORD-2023-1567</p>
                         <p className="text-xs text-gray-500">April 14, 2023</p>
                       </div>
                       <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Shipped</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-amber-50 rounded-md">
                       <div>
-                        <p className="font-medium">#ORD-2023-1566</p>
+                        <p className="font-medium text-amber-800">#ORD-2023-1566</p>
                         <p className="text-xs text-gray-500">April 14, 2023</p>
                       </div>
                       <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Shipped</span>
@@ -198,20 +198,20 @@ export default function AdminDashboard() {
                     <div className="flex items-center p-3 bg-amber-50 rounded-md">
                       <div className="w-12 h-12 bg-gray-200 rounded mr-3"></div>
                       <div className="flex-1">
-                        <p className="font-medium">Handmade Ceramic Tajine</p>
+                        <p className="font-medium text-amber-800">Handmade Ceramic Tajine</p>
                         <div className="flex justify-between">
                           <p className="text-xs text-gray-500">54 sales</p>
-                          <p className="text-sm font-medium">$89.99</p>
+                          <p className="text-sm font-bold text-amber-800">$89.99</p>
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center p-3 bg-amber-50 rounded-md">
                       <div className="w-12 h-12 bg-gray-200 rounded mr-3"></div>
                       <div className="flex-1">
-                        <p className="font-medium">Moroccan Leather Pouf</p>
+                        <p className="font-medium text-amber-800">Moroccan Leather Pouf</p>
                         <div className="flex justify-between">
                           <p className="text-xs text-gray-500">42 sales</p>
-                          <p className="text-sm font-medium">$129.99</p>
+                          <p className="text-sm font-bold text-amber-800">$129.99</p>
                         </div>
                       </div>
                     </div>
