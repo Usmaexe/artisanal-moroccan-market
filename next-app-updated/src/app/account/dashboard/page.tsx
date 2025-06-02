@@ -4,7 +4,7 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/lib/auth/AuthContext";
 import Link from "next/link";
 import Image from "next/image";
-import { Codex, ShoppingBag, Heart, User } from "lucide-react";
+import { ShoppingBag, Heart, User } from "lucide-react";
 
 export default function CustomerDashboard() {
   const { user } = useAuth();
@@ -85,7 +85,7 @@ export default function CustomerDashboard() {
 
             <div className="mt-8 bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center mb-4">
-                <Codex className="h-6 w-6 text-amber-600 mr-2" />
+                {/* <Codex className="h-6 w-6 text-amber-600 mr-2" /> */}
                 <h2 className="text-xl font-semibold text-gray-800">Recent Orders</h2>
               </div>
               <div className="bg-amber-50 rounded-md p-8 text-center">

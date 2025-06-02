@@ -125,7 +125,7 @@ export default function NewProduct() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                      className={`mt-1 block w-full border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                     />
                     {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                   </div>
@@ -140,7 +140,7 @@ export default function NewProduct() {
                       rows={4}
                       value={formData.description}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                      className={`mt-1 block w-full border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                     />
                     {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description}</p>}
                   </div>
@@ -160,7 +160,7 @@ export default function NewProduct() {
                           name="price"
                           value={formData.price}
                           onChange={handleChange}
-                          className={`block w-full pl-7 pr-3 py-2 border ${errors.price ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                          className={`block w-full pl-7 pr-3 py-2 border ${errors.price ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                           placeholder="0.00"
                         />
                       </div>
@@ -178,7 +178,7 @@ export default function NewProduct() {
                         value={formData.stock}
                         onChange={handleChange}
                         min="0"
-                        className={`mt-1 block w-full border ${errors.stock ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                        className={`mt-1 block w-full border ${errors.stock ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                       />
                       {errors.stock && <p className="mt-1 text-sm text-red-600">{errors.stock}</p>}
                     </div>
@@ -194,7 +194,7 @@ export default function NewProduct() {
                         name="category"
                         value={formData.category}
                         onChange={handleChange}
-                        className={`mt-1 block w-full border ${errors.category ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                        className={`mt-1 block w-full border ${errors.category ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                       >
                         <option value="">Select a category</option>
                         {categories.map((category) => (
@@ -215,7 +215,7 @@ export default function NewProduct() {
                         name="status"
                         value={formData.status}
                         onChange={handleChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600"
                       >
                         <option value="Active">Active</option>
                         <option value="Draft">Draft</option>
@@ -233,7 +233,7 @@ export default function NewProduct() {
                       name="artisanId"
                       value={formData.artisanId}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.artisanId ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                      className={`mt-1 block w-full border ${errors.artisanId ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                     >
                       <option value="">Select an artisan</option>
                       {mockArtisans.map((artisan) => (

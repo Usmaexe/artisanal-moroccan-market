@@ -83,13 +83,12 @@ export default function AdminSettings() {
               <label htmlFor="siteName" className="block text-sm font-medium text-gray-700">
                 Site Name
               </label>
-              <input
-                type="text"
+              <input                type="text"
                 name="siteName"
                 id="siteName"
                 value={formState.siteName}
                 onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600"
               />
             </div>
             
@@ -97,13 +96,12 @@ export default function AdminSettings() {
               <label htmlFor="siteDescription" className="block text-sm font-medium text-gray-700">
                 Site Description
               </label>
-              <textarea
-                name="siteDescription"
+              <textarea                name="siteDescription"
                 id="siteDescription"
                 rows={3}
                 value={formState.siteDescription}
                 onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600"
               />
             </div>
             
@@ -113,12 +111,11 @@ export default function AdminSettings() {
                   Contact Email
                 </label>
                 <input
-                  type="email"
-                  name="contactEmail"
+                  type="email"                  name="contactEmail"
                   id="contactEmail"
                   value={formState.contactEmail}
                   onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600"
                 />
               </div>
               
@@ -128,11 +125,10 @@ export default function AdminSettings() {
                 </label>
                 <input
                   type="text"
-                  name="contactPhone"
-                  id="contactPhone"
+                  name="contactPhone"                  id="contactPhone"
                   value={formState.contactPhone}
                   onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600"
                 />
               </div>
             </div>
@@ -191,12 +187,11 @@ export default function AdminSettings() {
                 Order Confirmation Email Template
               </label>
               <textarea
-                name="orderConfirmationTemplate"
-                id="orderConfirmationTemplate"
+                name="orderConfirmationTemplate"                id="orderConfirmationTemplate"
                 rows={5}
                 value={formState.orderConfirmationTemplate}
                 onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600"
               />
               <p className="mt-2 text-xs text-gray-500">
                 Available variables: {"{order_id}"}, {"{customer_name}"}, {"{order_total}"}, {"{shipping_address}"}
@@ -272,12 +267,11 @@ export default function AdminSettings() {
                   Currency Code
                 </label>
                 <input
-                  type="text"
-                  name="currencyCode"
+                  type="text"                  name="currencyCode"
                   id="currencyCode"
                   value={formState.currencyCode}
                   onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600"
                 />
               </div>
             </div>
@@ -387,12 +381,11 @@ export default function AdminSettings() {
               <label htmlFor="defaultUserRole" className="block text-sm font-medium text-gray-700">
                 Default User Role
               </label>
-              <select
-                name="defaultUserRole"
+              <select                name="defaultUserRole"
                 id="defaultUserRole"
                 value={formState.defaultUserRole}
                 onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600"
               >
                 <option value="customer">Customer</option>
                 <option value="artisan">Artisan</option>
@@ -462,12 +455,11 @@ export default function AdminSettings() {
                 Footer Text
               </label>
               <textarea
-                name="footerText"
-                id="footerText"
+                name="footerText"                id="footerText"
                 rows={2}
                 value={formState.footerText}
                 onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600"
               />
             </div>
           </div>

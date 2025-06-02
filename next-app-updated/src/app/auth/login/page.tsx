@@ -60,11 +60,10 @@ export default function LoginPage() {
                 Email address
               </label>
               <div className="mt-1">
-                <input
-                  id="email"
+                <input                  id="email"
                   type="email"
                   autoComplete="email"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border text-amber-600"
                   {...register("email", { 
                     required: "Email is required",
                     pattern: {
@@ -84,11 +83,10 @@ export default function LoginPage() {
                 Password
               </label>
               <div className="mt-1">
-                <input
-                  id="password"
+                <input                  id="password"
                   type="password"
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border text-amber-600"
                   {...register("password", { 
                     required: "Password is required",
                     minLength: {

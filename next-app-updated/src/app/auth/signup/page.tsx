@@ -71,11 +71,10 @@ export default function SignupPage() {
                 Full name
               </label>
               <div className="mt-1">
-                <input
-                  id="name"
+                <input                  id="name"
                   type="text"
                   autoComplete="name"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border text-amber-600"
                   {...register("name", { 
                     required: "Name is required",
                     minLength: {
@@ -96,10 +95,9 @@ export default function SignupPage() {
               </label>
               <div className="mt-1">
                 <input
-                  id="email"
-                  type="email"
+                  id="email"                  type="email"
                   autoComplete="email"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border text-amber-600"
                   {...register("email", { 
                     required: "Email is required",
                     pattern: {
@@ -121,9 +119,8 @@ export default function SignupPage() {
               <div className="mt-1">
                 <input
                   id="password"
-                  type="password"
-                  autoComplete="new-password"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  type="password"                  autoComplete="new-password"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border text-amber-600"
                   {...register("password", { 
                     required: "Password is required",
                     minLength: {
@@ -143,10 +140,9 @@ export default function SignupPage() {
                 Confirm password
               </label>
               <div className="mt-1">
-                <input
-                  id="confirmPassword"
+                <input                  id="confirmPassword"
                   type="password"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border text-amber-600"
                   {...register("confirmPassword", { 
                     required: "Please confirm your password",
                     validate: value => value === password || "Passwords do not match"
@@ -163,9 +159,8 @@ export default function SignupPage() {
                 I am a:
               </label>
               <div className="mt-1">
-                <select
-                  id="role"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                <select                  id="role"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border text-amber-600"
                   {...register("role", { 
                     required: "Please select a role"
                   })}

@@ -148,8 +148,7 @@ export default function ProductsPage() {
                     placeholder="Search products..."
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    onFocus={() => setSearchFocus(true)}
-                    className={`block w-full pl-10 pr-4 py-2 border-2 text-amber-800 border-gray-300 ${
+                    onFocus={() => setSearchFocus(true)}                    className={`block w-full pl-10 pr-4 py-2 border-2 text-amber-600 border-gray-300 ${
                       searchTerm ? 'rounded-l-lg' : 'rounded-lg'
                     } focus:ring-amber-500 focus:border-amber-500`}
                   />
@@ -186,9 +185,8 @@ export default function ProductsPage() {
             <div className="relative">
               <div className="relative">
                 <select 
-                  value={selectedCategory}
-                  onChange={handleCategoryChange}
-                  className="block appearance-none w-full bg-white border-2 border-gray-300 rounded-lg py-2 px-4 pr-8 focus:outline-none text-amber-800 focus:ring-amber-800 focus:border-amber-800"
+                  value={selectedCategory}                  onChange={handleCategoryChange}
+                  className="block appearance-none w-full bg-white border-2 border-gray-300 rounded-lg py-2 px-4 pr-8 focus:outline-none text-amber-600 focus:ring-amber-800 focus:border-amber-800"
                 >
                   <option value="">All Categories</option>
                   {allCategories.map(category => (
@@ -205,9 +203,8 @@ export default function ProductsPage() {
             <div className="relative">
               <div className="relative">
                 <select 
-                  value={sortOption}
-                  onChange={handleSortChange}
-                  className="block appearance-none w-full bg-white border-2 text-amber-800 border-gray-300 rounded-lg py-2 px-4 pr-8 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                  value={sortOption}                  onChange={handleSortChange}
+                  className="block appearance-none w-full bg-white border-2 text-amber-600 border-gray-300 rounded-lg py-2 px-4 pr-8 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
                 >
                   <option>Featured</option>
                   <option>Price: Low to High</option>

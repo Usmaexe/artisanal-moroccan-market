@@ -118,7 +118,7 @@ export default function NewUser() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                      className={`mt-1 block w-full border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                     />
                     {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                   </div>
@@ -133,7 +133,7 @@ export default function NewUser() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                      className={`mt-1 block w-full border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                     />
                     {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
                   </div>
@@ -147,7 +147,7 @@ export default function NewUser() {
                       name="role"
                       value={formData.role}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.role ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                      className={`mt-1 block w-full border ${errors.role ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                     >
                       <option value="">Select a role</option>
                       <option value="customer">Customer</option>
@@ -166,7 +166,7 @@ export default function NewUser() {
                       name="status"
                       value={formData.status}
                       onChange={handleChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500"
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600"
                     >
                       <option value="Active">Active</option>
                       <option value="Inactive">Inactive</option>
@@ -184,7 +184,7 @@ export default function NewUser() {
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
-                        className={`block w-full pr-10 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                        className={`block w-full pr-10 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                       />
                       <button
                         type="button"
@@ -212,7 +212,7 @@ export default function NewUser() {
                         name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleChange}
-                        className={`block w-full pr-10 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500`}
+                        className={`block w-full pr-10 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm p-2 focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-amber-600`}
                       />
                       <button
                         type="button"
