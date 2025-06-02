@@ -89,7 +89,7 @@ export default function CartPage() {
                         
                         <div className="flex items-center justify-between">
                           {/* Quantity controls */}
-                          <div className="flex items-center border border-gray-300 rounded-md">
+                          <div className="flex items-center border border-gray-300 rounded-md text-amber-600">
                             <button
                               onClick={() => updateItemQuantity(item.id, Math.max(1, item.quantity - 1))}
                               className="p-2 hover:bg-gray-100"
@@ -149,20 +149,20 @@ export default function CartPage() {
               <div className="space-y-4">
                 <div className="flex justify-between border-b pb-4">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${cartTotal.toFixed(2)}</span>
+                  <span className="font-medium text-amber-800">${cartTotal.toFixed(2)}</span>
                 </div>
                 
                 <div className="flex justify-between border-b pb-4">
                   <span className="text-gray-600">Shipping</span>
-                  <span className="font-medium">Calculated at checkout</span>
+                  <span className="font-medium text-amber-800">Calculated at checkout</span>
                 </div>
                 
                 <div className="flex justify-between border-b pb-4">
                   <span className="text-gray-600">Tax</span>
-                  <span className="font-medium">Calculated at checkout</span>
+                  <span className="font-medium text-amber-800">Calculated at checkout</span>
                 </div>
                 
-                <div className="flex justify-between font-semibold text-lg">
+                <div className="flex justify-between font-semibold text-lg text-amber-800">
                   <span>Total</span>
                   <span>${cartTotal.toFixed(2)}</span>
                 </div>
