@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getProductBySlug, getProducts } from "@/data/products";
 import AddToCartButton from "@/components/cart/AddToCartButton";
+import ReviewSection from "@/components/products/ReviewSection";
 
 interface ProductPageProps {
   params: {
@@ -196,12 +197,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </p>
                 <p className="text-gray-600 mb-2">
                   <span className="font-medium">Location:</span> {product.artisan.location}
-                </p>
-                <p className="text-gray-600">{product.artisan.bio}</p>
+                </p>                <p className="text-gray-600">{product.artisan.bio}</p>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Review Section */}
+        <ReviewSection productId={product.id} productSlug={product.slug} />
       </div>
     </div>
   );
