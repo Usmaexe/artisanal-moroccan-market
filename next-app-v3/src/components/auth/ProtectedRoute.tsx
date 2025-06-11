@@ -53,7 +53,7 @@ const ProtectedRoute = ({
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="spinner h-12 w-12 border-4 border-t-amber-600 border-gray-200 rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-amber-600">Loading...</p>
         </div>
       </div>
     );

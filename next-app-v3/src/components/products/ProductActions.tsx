@@ -41,24 +41,23 @@ export default function ProductActions({ product }: ProductActionsProps) {
   };
 
   return (
-    <div className="mt-8 space-y-4">
-      <div className="flex items-center mb-4">
-        <label htmlFor="quantity" className="mr-4 text-gray-700 font-medium">
+    <div className="mt-8 space-y-4">      <div className="flex items-center mb-4">
+        <label htmlFor="quantity" className="mr-4 text-amber-800 font-medium">
           Quantity:
         </label>
         <div className="flex items-center border border-gray-300 rounded-md">
           <button
             type="button"
-            className="px-3 py-1 text-gray-600 hover:bg-gray-100"
+            className="px-3 py-1 text-amber-600 hover:bg-gray-100"
             onClick={() => quantity > 1 && setQuantity(quantity - 1)}
             aria-label="Decrease quantity"
           >
             -
           </button>
-          <span className="px-3 py-1 text-gray-800 font-medium">{quantity}</span>
+          <span className="px-3 py-1 text-amber-800 font-medium">{quantity}</span>
           <button
             type="button"
-            className="px-3 py-1 text-gray-600 hover:bg-gray-100"
+            className="px-3 py-1 text-amber-600 hover:bg-gray-100"
             onClick={() => setQuantity(quantity + 1)}
             aria-label="Increase quantity"
           >

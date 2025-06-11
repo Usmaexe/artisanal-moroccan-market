@@ -68,14 +68,14 @@ export default function SignupPage() {
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Full name
+                Full name <span className="text-red-500">*</span>
               </label>
               <div className="mt-1">
                 <input
                   id="name"
                   type="text"
-                  autoComplete="name"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  autoComplete="name" required
+                  className="block w-full rounded-md text-amber-950 border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
                   {...register("name", { 
                     required: "Name is required",
                     minLength: {
@@ -92,14 +92,14 @@ export default function SignupPage() {
             
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
+                Email address <span className="text-red-500">*</span>
               </label>
               <div className="mt-1">
                 <input
                   id="email"
                   type="email"
-                  autoComplete="email"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  autoComplete="email" required
+                  className="block w-full rounded-md text-amber-950 border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
                   {...register("email", { 
                     required: "Email is required",
                     pattern: {
@@ -116,14 +116,14 @@ export default function SignupPage() {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
+                Password <span className="text-red-500">*</span>
               </label>
               <div className="mt-1">
                 <input
                   id="password"
                   type="password"
-                  autoComplete="new-password"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  autoComplete="new-password" required
+                  className="block w-full rounded-md text-amber-950 border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
                   {...register("password", { 
                     required: "Password is required",
                     minLength: {
@@ -140,13 +140,13 @@ export default function SignupPage() {
             
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm password
+                Confirm password <span className="text-red-500">*</span>
               </label>
               <div className="mt-1">
                 <input
                   id="confirmPassword"
-                  type="password"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  type="password" required
+                  className="block w-full rounded-md text-amber-950 border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
                   {...register("confirmPassword", { 
                     required: "Please confirm your password",
                     validate: value => value === password || "Passwords do not match"
@@ -164,8 +164,8 @@ export default function SignupPage() {
               </label>
               <div className="mt-1">
                 <select
-                  id="role"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
+                  id="role" required
+                  className="block w-full rounded-md text-amber-950 border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-2 border"
                   {...register("role", { 
                     required: "Please select a role"
                   })}

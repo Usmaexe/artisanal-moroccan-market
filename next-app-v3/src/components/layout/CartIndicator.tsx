@@ -11,7 +11,7 @@ export default function CartIndicator() {
   return (
     <Link 
       href="/cart" 
-      className="relative p-2 text-gray-600 hover:text-amber-600 transition-colors"
+      className="relative p-2 text-amber-600 hover:text-amber-800 transition-colors"
       aria-label={`Shopping cart with ${itemCount} items`}
     >
       <ShoppingCart className="h-6 w-6" />

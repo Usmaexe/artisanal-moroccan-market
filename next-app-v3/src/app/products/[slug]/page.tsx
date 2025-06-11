@@ -104,27 +104,27 @@ export default function ProductPage({ params }: ProductPageProps) {
         <nav className="mb-6 text-sm">
           <ol className="flex items-center space-x-2">
             <li>
-              <Link href="/" className="text-gray-500 hover:text-amber-600">
+              <Link href="/" className="text-amber-600 hover:text-amber-800">
                 Home
               </Link>
             </li>
-            <li className="text-gray-500">/</li>
+            <li className="text-amber-600">/</li>
             <li>
-              <Link href="/products" className="text-gray-500 hover:text-amber-600">
+              <Link href="/products" className="text-amber-600 hover:text-amber-800">
                 Products
               </Link>
             </li>
-            <li className="text-gray-500">/</li>
+            <li className="text-amber-600">/</li>
             <li>
               <Link 
                 href={`/categories/${product.category.slug}`} 
-                className="text-gray-500 hover:text-amber-600"
+                className="text-amber-600 hover:text-amber-800"
               >
                 {product.category.name}
               </Link>
             </li>
-            <li className="text-gray-500">/</li>
-            <li className="text-amber-600 font-medium">{product.name}</li>
+            <li className="text-amber-600">/</li>
+            <li className="text-amber-800 font-medium">{product.name}</li>
           </ol>
         </nav>
 
@@ -178,16 +178,15 @@ export default function ProductPage({ params }: ProductPageProps) {
                   fill
                   style={{ objectFit: "cover" }}
                 />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-1">{product.artisan.name}</h3>
-                <p className="text-gray-600 mb-2">
+              </div>              <div>
+                <h3 className="text-xl font-semibold text-amber-800 mb-1">{product.artisan.name}</h3>
+                <p className="text-amber-600 mb-2">
                   <span className="font-medium">Specialty:</span> {product.artisan.specialty}
                 </p>
-                <p className="text-gray-600 mb-2">
+                <p className="text-amber-600 mb-2">
                   <span className="font-medium">Location:</span> {product.artisan.location}
                 </p>
-                <p className="text-gray-600">{product.artisan.bio}</p>
+                <p className="text-amber-600">{product.artisan.bio}</p>
               </div>
             </div>
           </div>

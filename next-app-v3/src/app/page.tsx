@@ -169,13 +169,11 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
-
-      {/* Categories Section */}
+      </section>      {/* Categories Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-2 text-gray-900">Explore Categories</h2>
-          <p className="text-gray-600 mb-8">Discover our collection of handmade Moroccan treasures</p>
+          <h2 className="text-3xl font-bold mb-2 text-amber-800">Explore Categories</h2>
+          <p className="text-amber-600 mb-8">Discover our collection of handmade Moroccan treasures</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayCategories.slice(0, 4).map((category) => (
@@ -205,8 +203,8 @@ export default function Home() {
       {/* Featured Products Section */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-2 text-gray-900">Featured Products</h2>
-          <p className="text-gray-600 mb-8">Handpicked selection of our finest craftsmanship</p>
+          <h2 className="text-3xl font-bold mb-2 text-amber-800">Featured Products</h2>
+          <p className="text-amber-600 mb-8">Handpicked selection of our finest craftsmanship</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayProducts.map((product) => (

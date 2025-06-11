@@ -11,7 +11,7 @@ export default function WishlistIndicator() {
   return (
     <Link 
       href="/account/wishlist" 
-      className="relative p-2 text-gray-600 hover:text-amber-600 transition-colors"
+      className="relative p-2 text-amber-600 hover:text-amber-800 transition-colors"
       aria-label={`Wishlist with ${items.length} items`}
     >
       <Heart className={`h-6 w-6 ${hasItems ? 'fill-red-500 text-red-500' : ''}`} />

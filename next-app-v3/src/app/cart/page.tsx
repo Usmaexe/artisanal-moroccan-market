@@ -23,15 +23,14 @@ export default function CartPage() {
   };
 
   if (items.length === 0) {
-    return (
-      <div className="container mx-auto px-4 py-16 max-w-6xl">
-        <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
+    return (      <div className="container mx-auto px-4 py-16 max-w-6xl">
+        <h1 className="text-3xl font-bold mb-8 text-amber-800">Your Cart</h1>
         <div className="bg-white rounded-lg shadow-md p-8 text-center">
           <div className="flex justify-center mb-4">
-            <ShoppingBag className="h-16 w-16 text-gray-300" />
+            <ShoppingBag className="h-16 w-16 text-amber-300" />
           </div>
-          <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
-          <p className="text-gray-600 mb-6">Looks like you haven't added any products to your cart yet.</p>
+          <h2 className="text-2xl font-semibold mb-4 text-amber-800">Your cart is empty</h2>
+          <p className="text-amber-600 mb-6">Looks like you haven&apos;t added any products to your cart yet.</p>
           <Link 
             href="/products" 
             className="inline-flex items-center bg-amber-600 text-white px-6 py-3 rounded-md font-medium hover:bg-amber-700 transition-colors"
@@ -44,9 +43,8 @@ export default function CartPage() {
     );
   }
 
-  return (
-    <div className="container mx-auto px-4 py-16 max-w-6xl">
-      <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
+  return (    <div className="container mx-auto px-4 py-16 max-w-6xl">
+      <h1 className="text-3xl font-bold mb-8 text-amber-800">Your Cart</h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
@@ -65,9 +63,8 @@ export default function CartPage() {
                         />
                       </div>
 
-                      <div className="ml-4 flex-1 flex flex-col">
-                        <div>
-                          <div className="flex justify-between text-base font-medium text-gray-900">
+                      <div className="ml-4 flex-1 flex flex-col">                        <div>
+                          <div className="flex justify-between text-base font-medium text-amber-800">
                             <h3>
                               <Link href={`/products/${item.product.slug}`} className="hover:text-amber-600">
                                 {item.product.name}
@@ -75,24 +72,23 @@ export default function CartPage() {
                             </h3>
                             <p className="ml-4">${(item.product.price * item.quantity).toFixed(2)}</p>
                           </div>
-                          <p className="mt-1 text-sm text-gray-500">
+                          <p className="mt-1 text-sm text-amber-600">
                             By {item.product.artisan.name}
                           </p>
                         </div>
                         <div className="flex-1 flex items-end justify-between text-sm">
-                          <div className="flex items-center border border-gray-300 rounded-md">
-                            <button
+                          <div className="flex items-center border border-gray-300 rounded-md">                            <button
                               type="button"
-                              className="p-2 text-gray-600 hover:bg-gray-100"
+                              className="p-2 text-amber-600 hover:bg-gray-100"
                               onClick={() => item.quantity > 1 && updateQuantity(item.product.id, item.quantity - 1)}
                               aria-label="Decrease quantity"
                             >
                               <Minus className="h-4 w-4" />
                             </button>
-                            <span className="px-4 py-2 text-gray-800 font-medium">{item.quantity}</span>
+                            <span className="px-4 py-2 text-amber-800 font-medium">{item.quantity}</span>
                             <button
                               type="button"
-                              className="p-2 text-gray-600 hover:bg-gray-100"
+                              className="p-2 text-amber-600 hover:bg-gray-100"
                               onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
                               aria-label="Increase quantity"
                             >
@@ -118,26 +114,24 @@ export default function CartPage() {
           </div>
         </div>
 
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-lg font-medium text-gray-900 mb-4">Order Summary</h2>
-            
-            <div className="border-t border-gray-200 py-4">
+        <div className="lg:col-span-1">          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-lg font-medium text-amber-800 mb-4">Order Summary</h2>
+              <div className="border-t border-gray-200 py-4">
               <div className="flex justify-between mb-2">
-                <p className="text-sm text-gray-600">Subtotal</p>
-                <p className="text-sm font-medium text-gray-900">${getCartTotal().toFixed(2)}</p>
+                <p className="text-sm text-amber-600">Subtotal</p>
+                <p className="text-sm font-medium text-amber-800">${getCartTotal().toFixed(2)}</p>
               </div>
               <div className="flex justify-between mb-2">
-                <p className="text-sm text-gray-600">Shipping</p>
-                <p className="text-sm font-medium text-gray-900">$10.00</p>
+                <p className="text-sm text-amber-600">Shipping</p>
+                <p className="text-sm font-medium text-amber-800">$10.00</p>
               </div>
               <div className="flex justify-between mb-2">
-                <p className="text-sm text-gray-600">Tax</p>
-                <p className="text-sm font-medium text-gray-900">${(getCartTotal() * 0.05).toFixed(2)}</p>
+                <p className="text-sm text-amber-600">Tax</p>
+                <p className="text-sm font-medium text-amber-800">${(getCartTotal() * 0.05).toFixed(2)}</p>
               </div>
               <div className="flex justify-between pt-4 border-t border-gray-200">
-                <p className="text-base font-medium text-gray-900">Total</p>
-                <p className="text-base font-medium text-gray-900">
+                <p className="text-base font-medium text-amber-800">Total</p>
+                <p className="text-base font-medium text-amber-800">
                   ${(getCartTotal() + 10 + getCartTotal() * 0.05).toFixed(2)}
                 </p>
               </div>
