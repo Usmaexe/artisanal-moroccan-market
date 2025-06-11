@@ -1,9 +1,83 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+interface Category {
+  id: number;
+  name: string;
+  image: string;
+  slug: string;
+}
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  slug: string;
+  is_featured?: boolean;
+}
+
+interface ApiCategory {
+  category_id: number;
+  name: string;
+  image_url: string;
+}
+
+interface ApiProduct {
+  product_id: number;
+  name: string;
+  price: string;
+  image_url: string;
+  is_featured: boolean;
+}
 
 export default function Home() {
-  // Featured categories
-  const categories = [
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch categories
+        const categoriesResponse = await axios.get<ApiCategory[]>("http://localhost:5000/api/categories");
+        const transformedCategories = categoriesResponse.data.map(category => ({
+          id: category.category_id,
+          name: category.name,
+          image: category.image_url,
+          slug: category.name.toLowerCase().replace(/\s+/g, '-')
+        }));
+
+        // Fetch products (first 4)
+        const productsResponse = await axios.get<ApiProduct[]>("http://localhost:5000/api/products");
+        const transformedProducts = productsResponse.data.slice(0, 4).map(product => ({
+          id: product.product_id,
+          name: product.name,
+          price: parseFloat(product.price),
+          image: product.image_url,
+          slug: product.name.toLowerCase().replace(/\s+/g, '-'),
+          is_featured: product.is_featured
+        }));
+
+        setCategories(transformedCategories);
+        setProducts(transformedProducts);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Fallback data
+  const fallbackCategories: Category[] = [
     {
       id: 1,
       name: "Pottery & Ceramics",
@@ -30,8 +104,7 @@ export default function Home() {
     }
   ];
 
-  // Featured products
-  const featuredProducts = [
+  const fallbackProducts: Product[] = [
     {
       id: 1,
       name: "Hand-Painted Ceramic Bowl",
@@ -61,6 +134,9 @@ export default function Home() {
       slug: "silver-berber-necklace"
     }
   ];
+
+  const displayCategories = isLoading || error ? fallbackCategories : categories;
+  const displayProducts = isLoading || error ? fallbackProducts : products;
 
   return (
     <div className="bg-amber-50">
@@ -102,7 +178,7 @@ export default function Home() {
           <p className="text-gray-600 mb-8">Discover our collection of handmade Moroccan treasures</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category) => (
+            {displayCategories.slice(0, 4).map((category) => (
               <Link 
                 key={category.id} 
                 href={`/categories/${category.slug}`}
@@ -126,14 +202,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Products */}
+      {/* Featured Products Section */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold mb-2 text-gray-900">Featured Products</h2>
           <p className="text-gray-600 mb-8">Handpicked selection of our finest craftsmanship</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
+            {displayProducts.map((product) => (
               <Link 
                 key={product.id} 
                 href={`/products/${product.slug}`}
@@ -150,7 +226,7 @@ export default function Home() {
                 </div>
                 <div className="p-4">
                   <h3 className="text-gray-900 font-medium text-lg mb-1">{product.name}</h3>
-                  <p className="text-amber-600 font-bold">${product.price}</p>
+                  <p className="text-amber-600 font-bold">{product.price} DH</p>
                 </div>
               </Link>
             ))}
@@ -163,42 +239,6 @@ export default function Home() {
             >
               View All Products
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Artisan Story Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div className="relative h-[400px] rounded-lg overflow-hidden">
-              <Image
-                src="https://images.unsplash.com/photo-1551448215-38fb4f8c9d5e"
-                alt="Moroccan artisan"
-                fill
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold mb-4 text-gray-900">Preserving Moroccan Heritage</h2>
-              <p className="text-gray-600 mb-6">
-                For generations, Moroccan artisans have passed down their craft, preserving techniques that date back centuries. 
-                Each piece in our collection represents this rich heritage and the skilled hands that created it.
-              </p>
-              <p className="text-gray-600 mb-6">
-                When you purchase from Moroccan Artisans, you're not just buying a product - you're supporting traditional 
-                craftsmanship and helping to sustain these ancient art forms for future generations.
-              </p>
-              <Link 
-                href="/about"
-                className="text-amber-600 font-medium flex items-center hover:underline"
-              >
-                Learn more about our artisans
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </Link>
-            </div>
           </div>
         </div>
       </section>

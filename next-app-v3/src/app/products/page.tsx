@@ -1,14 +1,56 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { getProducts } from "@/data/products";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-export const metadata = {
-  title: "Products | Moroccan Artisans",
-  description: "Discover authentic Moroccan artisanal products crafted with traditional techniques."
-};
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  salePrice?: number;
+  isOnSale?: boolean;
+  images: string[];
+  slug: string;
+  category: {
+    name: string;
+  };
+}
 
 export default function ProductsPage() {
-  const products = getProducts();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/products");
+        const apiProducts = response.data.map((product: any) => ({
+          id: product.product_id,
+          name: product.name,
+          price: parseFloat(product.price),
+          images: [product.image_url],
+          slug: product.name.toLowerCase().replace(/\s+/g, '-'),
+          category: {
+            name: product.category.name
+          },
+          isOnSale: false // You can add sale logic based on your API data
+        }));
+        setProducts(apiProducts);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (isLoading) return <div className="text-center py-8">Loading products...</div>;
+  if (error) return <div className="text-center py-8 text-red-500">Error loading products: {error}</div>;
 
   return (
     <div className="bg-amber-50 py-8">
@@ -58,11 +100,11 @@ export default function ProductsPage() {
                 <div className="flex items-center justify-between">
                   {product.isOnSale ? (
                     <div className="flex items-center gap-2">
-                      <span className="text-amber-600 font-bold">${product.salePrice}</span>
-                      <span className="text-gray-500 text-sm line-through">${product.price}</span>
+                      <span className="text-amber-600 font-bold">{product.salePrice} DH</span>
+                      <span className="text-gray-500 text-sm line-through">{product.price} DH</span>
                     </div>
                   ) : (
-                    <span className="text-amber-600 font-bold">${product.price}</span>
+                    <span className="text-amber-600 font-bold">{product.price} DH</span>
                   )}
                   <span className="text-gray-500 text-sm">{product.category.name}</span>
                 </div>
@@ -73,4 +115,4 @@ export default function ProductsPage() {
       </div>
     </div>
   );
-} 
+}
