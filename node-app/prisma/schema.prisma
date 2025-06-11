@@ -9,148 +9,78 @@ datasource db {
 }
 
 model Product {
-  product_id    String    @id @default(uuid())
+  product_id     Int      @id @default(autoincrement())
   name          String
-  slug          String    @unique
   description   String
   price         Decimal
+  is_featured   Boolean  @default(false)
   image_url     String
-  features      String[]
-  dimensions    String?
-  materials     String[]
-  inStock       Boolean   @default(true)
-  isFeatured    Boolean   @default(false)
-  isOnSale      Boolean   @default(false)
-  salePrice     Decimal?  
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  rating        Float?
   
-  category_id   String
-  category      Category  @relation(fields: [category_id], references: [category_id])
+  category_id   Int
+  category      Category @relation(fields: [category_id], references: [category_id])
   
-  artisan_id    String
-  artisan       Artisan   @relation(fields: [artisan_id], references: [artisan_id])
+  artisan_id    Int
+  artisan       Artisan  @relation(fields: [artisan_id], references: [artisan_id])
   
   reviews       Review[]
-  orderItems    OrderItem[]
-  wishlistItems WishlistItem[]
+  order_items   OrderItem[]
 }
 
 model Category {
-  category_id  String    @id @default(uuid())
+  category_id  Int      @id @default(autoincrement())
   name         String
-  slug         String    @unique
-  description  String
-  image        String
+  image_url    String
   products     Product[]
 }
 
 model Artisan {
-  artisan_id  String    @id @default(uuid())
-  name        String
-  slug        String?    @unique
-  image       String?
-  bio         String
-  location    String
-  specialty   String?
-  products    Product[]
+  artisan_id   Int      @id @default(autoincrement())
+  name         String
+  bio          String
+  image_url    String
+  location     String
+  products     Product[]
 }
 
-model User {
-  user_id       String    @id @default(uuid())
-  name          String
-  email         String    @unique
-  password_hash String
-  role          UserRole  @default(customer)
-  image         String?
-  phone         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  address      Address?
-  reviews      Review[] @relation("CustomerReviews")
-  orders       Order[]
-  wishlist     WishlistItem[]
-}
-
-enum UserRole {
-  customer
-  artisan
-  admin
-}
-
-model Address {
-  address_id  String  @id @default(uuid())
-  street      String
-  city        String
-  state       String?
-  postalCode  String
-  country     String
-  
-  user_id     String  @unique
-  user        User    @relation(fields: [user_id], references: [user_id])
-  orders      Order[]
+model Customer {
+  customer_id    Int      @id @default(autoincrement())
+  email          String   @unique
+  password_hash  String
+  reviews        Review[]
+  orders         Order[]
 }
 
 model Order {
-  order_id   String      @id @default(uuid())
-  status     OrderStatus @default(pending)
-  total      Decimal
-  paymentId  String?
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  order_id     Int      @id @default(autoincrement())
+  status       String   @default("pending")
+  total        Decimal
   
-  customer_id String
-  customer    User        @relation(fields: [customer_id], references: [user_id])
+  customer_id  Int
+  customer     Customer @relation(fields: [customer_id], references: [customer_id])
   
-  address_id  String
-  address    Address     @relation(fields: [address_id], references: [address_id])
-  
-  items      OrderItem[]
-}
-
-enum OrderStatus {
-  pending
-  processing
-  shipped
-  delivered
-  cancelled
+  items        OrderItem[]
 }
 
 model OrderItem {
-  item_id    String  @id @default(uuid())
-  quantity   Int
-  price      Decimal
+  order_item_id Int     @id @default(autoincrement())
+  quantity      Int
   
-  order_id   String
-  order      Order   @relation(fields: [order_id], references: [order_id])
+  order_id      Int
+  order         Order   @relation(fields: [order_id], references: [order_id])
   
-  product_id String
-  product    Product @relation(fields: [product_id], references: [product_id])
+  product_id    Int
+  product       Product @relation(fields: [product_id], references: [product_id])
 }
 
 model Review {
-  review_id  String   @id @default(uuid())
-  rating     Int
-  comment    String?
-  createdAt  DateTime @default(now())
+  review_id    Int      @id @default(autoincrement())
+  rating       Int
+  comment      String?
   
-  product_id String
-  product    Product  @relation(fields: [product_id], references: [product_id])
+  product_id   Int
+  product      Product  @relation(fields: [product_id], references: [product_id])
   
-  customer_id String
-  customer    User     @relation(fields: [customer_id], references: [user_id], name: "CustomerReviews")
-}
-
-model WishlistItem {
-  wishlist_id String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  
-  user_id     String
-  user        User     @relation(fields: [user_id], references: [user_id])
-  
-  product_id  String
-  product     Product  @relation(fields: [product_id], references: [product_id])
-  
-  @@unique([user_id, product_id])
+  customer_id  Int
+  customer     Customer @relation(fields: [customer_id], references: [customer_id])
 }
