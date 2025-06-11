@@ -12,17 +12,15 @@ export default function ProductsPage() {
 
   return (
     <div className="bg-amber-50 py-8">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">All Products</h1>
-          <p className="text-gray-600">Discover our collection of handmade Moroccan treasures</p>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-amber-800 mb-2">All Products</h1>
+          <p className="text-amber-600">Discover our collection of handmade Moroccan treasures</p>
         </div>
 
-        {/* Filters - can be expanded in future */}
-        <div className="bg-white p-4 rounded-lg shadow-sm mb-8">
+        {/* Filters - can be expanded in future */}        <div className="bg-white p-4 rounded-lg shadow-sm mb-8">
           <div className="flex flex-wrap items-center gap-4">
-            <span className="text-gray-700 font-medium">Sort by:</span>
-            <select className="rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring focus:ring-amber-200 focus:ring-opacity-50">
+            <span className="text-amber-800 font-medium">Sort by:</span>
+            <select className="rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring focus:ring-amber-200 focus:ring-opacity-50" title="Sort products">
               <option>Featured</option>
               <option>Price: Low to High</option>
               <option>Price: High to Low</option>
@@ -52,19 +50,18 @@ export default function ProductsPage() {
                     SALE
                   </div>
                 )}
-              </div>
-              <div className="p-4">
-                <h3 className="text-gray-900 font-medium text-lg mb-1">{product.name}</h3>
+              </div>              <div className="p-4">
+                <h3 className="text-amber-800 font-medium text-lg mb-1">{product.name}</h3>
                 <div className="flex items-center justify-between">
                   {product.isOnSale ? (
                     <div className="flex items-center gap-2">
                       <span className="text-amber-600 font-bold">${product.salePrice}</span>
-                      <span className="text-gray-500 text-sm line-through">${product.price}</span>
+                      <span className="text-amber-600 text-sm line-through">${product.price}</span>
                     </div>
                   ) : (
                     <span className="text-amber-600 font-bold">${product.price}</span>
                   )}
-                  <span className="text-gray-500 text-sm">{product.category.name}</span>
+                  <span className="text-amber-600 text-sm">{product.category.name}</span>
                 </div>
               </div>
             </Link>

@@ -93,13 +93,11 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
-
-      {/* Categories Section */}
+      </section>      {/* Categories Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-2 text-gray-900">Explore Categories</h2>
-          <p className="text-gray-600 mb-8">Discover our collection of handmade Moroccan treasures</p>
+          <h2 className="text-3xl font-bold mb-2 text-amber-800">Explore Categories</h2>
+          <p className="text-amber-600 mb-8">Discover our collection of handmade Moroccan treasures</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category) => (
@@ -124,13 +122,11 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* Featured Products */}
+      </section>      {/* Featured Products */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-2 text-gray-900">Featured Products</h2>
-          <p className="text-gray-600 mb-8">Handpicked selection of our finest craftsmanship</p>
+          <h2 className="text-3xl font-bold mb-2 text-amber-800">Featured Products</h2>
+          <p className="text-amber-600 mb-8">Handpicked selection of our finest craftsmanship</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product) => (
@@ -147,9 +143,8 @@ export default function Home() {
                     style={{ objectFit: "cover" }}
                     className="group-hover:scale-105 transition-transform duration-300"
                   />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-gray-900 font-medium text-lg mb-1">{product.name}</h3>
+                </div>                <div className="p-4">
+                  <h3 className="text-amber-800 font-medium text-lg mb-1">{product.name}</h3>
                   <p className="text-amber-600 font-bold">${product.price}</p>
                 </div>
               </Link>
@@ -178,15 +173,14 @@ export default function Home() {
                 fill
                 style={{ objectFit: "cover" }}
               />
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold mb-4 text-gray-900">Preserving Moroccan Heritage</h2>
-              <p className="text-gray-600 mb-6">
+            </div>            <div>
+              <h2 className="text-3xl font-bold mb-4 text-amber-800">Preserving Moroccan Heritage</h2>
+              <p className="text-amber-600 mb-6">
                 For generations, Moroccan artisans have passed down their craft, preserving techniques that date back centuries. 
                 Each piece in our collection represents this rich heritage and the skilled hands that created it.
               </p>
-              <p className="text-gray-600 mb-6">
-                When you purchase from Moroccan Artisans, you're not just buying a product - you're supporting traditional 
+              <p className="text-amber-600 mb-6">
+                When you purchase from Moroccan Artisans, you&apos;re not just buying a product - you&apos;re supporting traditional 
                 craftsmanship and helping to sustain these ancient art forms for future generations.
               </p>
               <Link 

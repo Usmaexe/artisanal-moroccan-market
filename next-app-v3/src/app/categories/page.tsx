@@ -12,10 +12,9 @@ export default function CategoriesPage() {
 
   return (
     <div className="bg-amber-50 py-8">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Product Categories</h1>
-          <p className="text-gray-600">Explore our collection organized by craft traditions</p>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-amber-800 mb-2">Product Categories</h1>
+          <p className="text-amber-600">Explore our collection organized by craft traditions</p>
         </div>
 
         {/* Categories Grid */}
@@ -53,13 +52,12 @@ export default function CategoriesPage() {
                 fill
                 style={{ objectFit: "cover" }}
               />
-            </div>
-            <div className="p-8 flex flex-col justify-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Preserving Moroccan Craft Heritage</h2>
-              <p className="text-gray-600 mb-6">
+            </div>            <div className="p-8 flex flex-col justify-center">
+              <h2 className="text-2xl font-bold text-amber-800 mb-4">Preserving Moroccan Craft Heritage</h2>
+              <p className="text-amber-600 mb-6">
                 Each category represents centuries of tradition and craftsmanship passed down through generations. 
                 By exploring these categories and supporting Moroccan artisans, you help preserve traditional 
-                techniques and cultural heritage that might otherwise be lost in today's mass-produced world.
+                techniques and cultural heritage that might otherwise be lost in today&apos;s mass-produced world.
               </p>
               <Link 
                 href="/about"

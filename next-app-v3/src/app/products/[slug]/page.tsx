@@ -47,31 +47,30 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <div className="bg-amber-50 py-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
-        <nav className="mb-6 text-sm">
+        {/* Breadcrumb */}        <nav className="mb-6 text-sm">
           <ol className="flex items-center space-x-2">
             <li>
-              <Link href="/" className="text-gray-500 hover:text-amber-600">
+              <Link href="/" className="text-amber-600 hover:text-amber-800">
                 Home
               </Link>
             </li>
-            <li className="text-gray-500">/</li>
+            <li className="text-amber-600">/</li>
             <li>
-              <Link href="/products" className="text-gray-500 hover:text-amber-600">
+              <Link href="/products" className="text-amber-600 hover:text-amber-800">
                 Products
               </Link>
             </li>
-            <li className="text-gray-500">/</li>
+            <li className="text-amber-600">/</li>
             <li>
               <Link 
                 href={`/categories/${product.category.slug}`} 
-                className="text-gray-500 hover:text-amber-600"
+                className="text-amber-600 hover:text-amber-800"
               >
                 {product.category.name}
               </Link>
             </li>
-            <li className="text-gray-500">/</li>
-            <li className="text-amber-600 font-medium">{product.name}</li>
+            <li className="text-amber-600">/</li>
+            <li className="text-amber-800 font-medium">{product.name}</li>
           </ol>
         </nav>
 
@@ -107,9 +106,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </div>
 
-            {/* Product Details */}
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            {/* Product Details */}            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-amber-800 mb-2">
                 {product.name}
               </h1>
               
@@ -120,7 +118,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <span className="text-2xl font-bold text-amber-600">
                       ${product.salePrice}
                     </span>
-                    <span className="text-gray-500 line-through">
+                    <span className="text-amber-600 line-through">
                       ${product.price}
                     </span>
                   </div>
@@ -132,25 +130,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
               
               {/* Description */}
-              <p className="text-gray-600 mb-6">
+              <p className="text-amber-600 mb-6">
                 {product.description}
               </p>
 
               {/* Features */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Features</h3>
-                <ul className="list-disc pl-5 space-y-1 text-gray-600">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">Features</h3>
+                <ul className="list-disc pl-5 space-y-1 text-amber-600">
                   {product.features.map((feature, index) => (
                     <li key={index}>{feature}</li>
                   ))}
                 </ul>
               </div>
 
-              {/* Materials & Dimensions */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
+              {/* Materials & Dimensions */}              <div className="grid grid-cols-2 gap-4 mb-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Materials</h3>
-                  <ul className="list-disc pl-5 space-y-1 text-gray-600">
+                  <h3 className="text-lg font-semibold text-amber-800 mb-2">Materials</h3>
+                  <ul className="list-disc pl-5 space-y-1 text-amber-600">
                     {product.materials.map((material, index) => (
                       <li key={index}>{material}</li>
                     ))}
@@ -158,8 +155,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
                 {product.dimensions && (
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Dimensions</h3>
-                    <p className="text-gray-600">{product.dimensions}</p>
+                    <h3 className="text-lg font-semibold text-amber-800 mb-2">Dimensions</h3>
+                    <p className="text-amber-600">{product.dimensions}</p>
                   </div>
                 )}
               </div>
@@ -170,9 +167,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
 
-        {/* Artisan Information */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">About the Artisan</h2>
+        {/* Artisan Information */}        <div className="mt-12">
+          <h2 className="text-2xl font-bold text-amber-800 mb-6">About the Artisan</h2>
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex flex-col md:flex-row items-start gap-6">
               <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0">
@@ -182,16 +178,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   fill
                   style={{ objectFit: "cover" }}
                 />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-1">{product.artisan.name}</h3>
-                <p className="text-gray-600 mb-2">
+              </div>              <div>
+                <h3 className="text-xl font-semibold text-amber-800 mb-1">{product.artisan.name}</h3>
+                <p className="text-amber-600 mb-2">
                   <span className="font-medium">Specialty:</span> {product.artisan.specialty}
                 </p>
-                <p className="text-gray-600 mb-2">
+                <p className="text-amber-600 mb-2">
                   <span className="font-medium">Location:</span> {product.artisan.location}
                 </p>
-                <p className="text-gray-600">{product.artisan.bio}</p>
+                <p className="text-amber-600">{product.artisan.bio}</p>
               </div>
             </div>
           </div>

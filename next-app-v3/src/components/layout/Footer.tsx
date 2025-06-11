@@ -25,9 +25,6 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">About</h3>
             <ul className="space-y-2 text-amber-100">
               <li><Link href="/about" className="hover:text-white">Our Story</Link></li>
-              <li><Link href="/about/artisans" className="hover:text-white">Meet the Artisans</Link></li>
-              <li><Link href="/about/sustainability" className="hover:text-white">Sustainability</Link></li>
-              <li><Link href="/contact" className="hover:text-white">Contact Us</Link></li>
             </ul>
           </div>
           <div>
@@ -44,15 +41,15 @@ const Footer = () => {
               </a>
             </div>
             <h4 className="text-sm font-medium mb-2">Subscribe to our newsletter</h4>
-            <form className="flex">
+            <form className="flex ">
               <input
                 type="email"
                 placeholder="Your email"
-                className="px-3 py-2 text-gray-800 text-sm rounded-l-md focus:outline-none focus:ring-0 w-full"
+                className="px-3 py-2 text-white border-2 border-amber-600 text-sm rounded-l-md focus:outline-none focus:ring-0 w-full"
               />
               <button
                 type="submit"
-                className="bg-amber-600 px-3 py-2 text-sm rounded-r-md hover:bg-amber-500"
+                className="bg-amber-600 px-3 py-2 text-sm rounded-r-md hover:bg-amber-500 hover:cursor-pointer"
               >
                 Subscribe
               </button>

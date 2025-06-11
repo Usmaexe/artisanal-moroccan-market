@@ -67,11 +67,10 @@ const Header = () => {
             {navigation.map((item) => (
               <Link
                 key={item.name}
-                href={item.href}
-                className={`${
+                href={item.href}              className={`${
                   pathname === item.href
                     ? "text-amber-700 border-b-2 border-amber-700"
-                    : "text-gray-500 hover:text-amber-600"
+                    : "text-amber-600 hover:text-amber-800"
                 } px-1 py-2 text-sm font-medium`}
               >
                 {item.name}
@@ -87,9 +86,8 @@ const Header = () => {
             </div>
             
             {user ? (
-              <div className="relative">
-                <button 
-                  className="flex items-center space-x-2 text-gray-700 hover:text-amber-600 focus:outline-none"
+              <div className="relative">                <button 
+                  className="flex items-center space-x-2 text-amber-800 hover:text-amber-600 focus:outline-none"
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                 >
                   <div className="relative w-8 h-8 rounded-full overflow-hidden border border-gray-300">
@@ -108,9 +106,8 @@ const Header = () => {
                 
                 {isProfileOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                    <div className="p-3 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-700">{user.name}</p>
-                      <p className="text-xs text-gray-500">{user.email}</p>
+                    <div className="p-3 border-b border-gray-100">                      <p className="text-sm font-medium text-amber-800">{user.name}</p>
+                      <p className="text-xs text-amber-600">{user.email}</p>
                       <p className="text-xs font-medium text-amber-600 mt-1 capitalize">{user.role}</p>
                     </div>
                     <div className="py-1">
@@ -118,7 +115,7 @@ const Header = () => {
                         <Link
                           key={item.name}
                           href={item.href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-700"
+                          className="block px-4 py-2 text-sm text-amber-800 hover:bg-amber-50 hover:text-amber-700"
                           onClick={() => setIsProfileOpen(false)}
                         >
                           {item.name}
@@ -129,7 +126,7 @@ const Header = () => {
                           setIsProfileOpen(false);
                           logout();
                         }}
-                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-700"
+                        className="flex items-center w-full px-4 py-2 text-sm text-amber-800 hover:bg-amber-50 hover:text-amber-700"
                       >
                         <LogOut className="h-4 w-4 mr-2" />
                         Sign out
@@ -157,10 +154,9 @@ const Header = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="flex items-center md:hidden">
-            <button
+          <div className="flex items-center md:hidden">            <button
               type="button"
-              className="text-gray-500 hover:text-amber-600 p-2"
+              className="text-amber-600 hover:text-amber-800 p-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -177,10 +173,9 @@ const Header = () => {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`${
-                  pathname === item.href
+                className={`${                  pathname === item.href
                     ? "bg-amber-50 text-amber-700"
-                    : "text-gray-700 hover:bg-amber-50 hover:text-amber-700"
+                    : "text-amber-800 hover:bg-amber-50 hover:text-amber-700"
                 } block px-3 py-2 rounded-md text-base font-medium`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -203,10 +198,9 @@ const Header = () => {
                       ) : (
                         <User className="h-full w-full p-1" />
                       )}
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-800">{user.name}</p>
-                      <p className="text-xs text-gray-500 capitalize">{user.role}</p>
+                    </div>                    <div>
+                      <p className="font-medium text-amber-800">{user.name}</p>
+                      <p className="text-xs text-amber-600 capitalize">{user.role}</p>
                     </div>
                   </div>
                   
@@ -214,7 +208,7 @@ const Header = () => {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-amber-50 hover:text-amber-700"
+                      className="block px-3 py-2 rounded-md text-base font-medium text-amber-800 hover:bg-amber-50 hover:text-amber-700"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {item.name}
@@ -226,7 +220,7 @@ const Header = () => {
                       setIsMenuOpen(false);
                       logout();
                     }}
-                    className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-amber-50 hover:text-amber-700"
+                    className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-amber-800 hover:bg-amber-50 hover:text-amber-700"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
                     Sign out
