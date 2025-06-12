@@ -13,38 +13,51 @@ function debugAuth(message, data = {}) {
 exports.register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
-    
+
+    // Validate required fields
     if (!name || !email || !password || !role) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    const hash = await bcrypt.hash(password.trim(), SALT_ROUNDS);
+    // Normalize and hash password
+    const trimmedName = name.trim();
     const cleanEmail = email.trim().toLowerCase();
+    const passwordHash = await bcrypt.hash(password.trim(), SALT_ROUNDS);
 
     if (role === 'artisan') {
+      // Artisan registration
       const artisan = await prismaAuth.artisan.create({
         data: {
-          name: name.trim(),
+          name: trimmedName,
           email: cleanEmail,
-          password_hash: hash,
+          password_hash: passwordHash,
           bio: 'New artisan',
           image_url: '/images/artisans/default.jpg',
-          location: 'Unknown'
-        }
+          location: 'Unknown',
+        },
       });
-      return res.status(201).json({ 
-        id: artisan.artisan_id,
-        email: artisan.email,
-        role: 'artisan'
-      });
+
+      return res.status(201).json({ id: artisan.artisan_id, email: artisan.email, role: 'artisan' });
     } else {
-      // Customer registration logic here
+      // Customer registration
+      const customer = await prismaAuth.customer.create({
+        data: {
+          name: trimmedName,
+          email: cleanEmail,
+          password_hash: passwordHash,
+        },
+      });
+
+      return res.status(201).json({ id: customer.customer_id, email: customer.email, role: 'customer' });
     }
   } catch (error) {
-    debugAuth('Registration error', { error: error.message });
+    console.error('Registration error:', error);
+
     if (error.code === 'P2002') {
+      // Unique constraint failed (email already exists)
       return res.status(400).json({ message: 'Email already exists' });
     }
+
     return res.status(500).json({ message: 'Registration failed' });
   }
 };

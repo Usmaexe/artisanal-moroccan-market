@@ -218,7 +218,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             {reviewsLoading ? (
               <div className="text-center py-4">Loading reviews...</div>
             ) : reviews.length === 0 ? (
-              <p className="text-gray-600">No reviews yet. Be the first to review!</p>
+              <p className="text-gray-600">No reviews yet.</p>
             ) : (
               <div className="space-y-6">
                 {reviews.map((review) => (
