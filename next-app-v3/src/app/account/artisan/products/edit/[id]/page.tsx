@@ -1,16 +1,18 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent, use } from "react";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import { toast } from "react-hot-toast";
 import { useAuth } from "@/lib/auth/AuthContext";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { getProductById } from "@/data/products";
+import axios from "axios";
 
-export default function EditProductPage({ params }: { params: { id: string } }) {
+export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, token } = useAuth();
+  const { id } = use(params);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [productNotFound, setProductNotFound] = useState(false);
   
@@ -37,36 +39,46 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
     inStock: true
   });
 
-  // Mock categories for the form
+  // Updated categories with numeric IDs that match your database
   const categories = [
-    { id: "cat1", name: "Pottery & Ceramics" },
-    { id: "cat2", name: "Carpets & Rugs" },
-    { id: "cat3", name: "Leather Goods" },
-    { id: "cat4", name: "Woodwork" },
-    { id: "cat5", name: "Metalwork" },
-    { id: "cat6", name: "Textiles" }
+    { id: "1", name: "Pottery & Ceramics" },
+    { id: "2", name: "Carpets & Rugs" },
+    { id: "3", name: "Leather Goods" },
+    { id: "4", name: "Woodwork" },
+    { id: "5", name: "Metalwork" },
+    { id: "6", name: "Textiles" }
   ];
 
   // Fetch product data
   useEffect(() => {
-    // In a real app, this would be an API call to get the product by ID
-    const product = getProductById(params.id);
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/products/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
+        const product = response.data;
+        setFormData({
+          name: product.name || "",
+          description: product.description || "",
+          price: product.price?.toString() || "",
+          categoryId: product.category_id?.toString() || "",
+          features: product.features?.join('\n') || '',
+          dimensions: product.dimensions || '',
+          materials: product.materials?.join(', ') || '',
+          inStock: product.inStock ?? true
+        });
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setProductNotFound(true);
+        toast.error("Failed to load product. Please try again.");
+      }
+    };
     
-    if (product) {
-      setFormData({
-        name: product.name,
-        description: product.description,
-        price: product.price.toString(),
-        categoryId: product.category.id, // Use category.id instead of categoryId
-        features: product.features.join('\n'),
-        dimensions: product.dimensions || '',
-        materials: product.materials.join(', '),
-        inStock: product.inStock
-      });
-    } else {
-      setProductNotFound(true);
-    }
-  }, [params.id]);
+    fetchProduct();
+  }, [id, token]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -83,24 +95,30 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
     setIsSubmitting(true);
     
     try {
-      // Process form data to match Product type structure
+      // Process form data - only send fields that exist in the database
       const processedData = {
-        ...formData,
+        name: formData.name,
+        description: formData.description,
         price: parseFloat(formData.price),
+        categoryId: formData.categoryId,
+        // These fields are not in the database but sent for completeness
+        dimensions: formData.dimensions,
         features: formData.features ? formData.features.split('\n').filter(f => f.trim()) : [],
-        materials: formData.materials ? formData.materials.split(',').map(m => m.trim()).filter(m => m) : []
+        materials: formData.materials ? formData.materials.split(',').map(m => m.trim()).filter(m => m) : [],
+        inStock: formData.inStock
       };
       
-      // In a real app, this would be an API call to update the product
-      console.log("Updating product:", processedData);
+      await axios.put(`http://localhost:5000/api/products/${id}`, processedData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Redirect to products list
+      toast.success("Product updated successfully!");
       router.push("/account/artisan/products");
     } catch (error) {
       console.error("Error updating product:", error);
+      toast.error("Failed to update product. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -210,6 +228,51 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                       ))}
                     </select>
                   </div>
+
+                  <div>
+                    <label htmlFor="dimensions" className="block text-sm font-medium text-gray-700">
+                      Dimensions <span className="text-gray-400 text-xs">(metadata only)</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="dimensions"
+                      name="dimensions"
+                      value={formData.dimensions}
+                      onChange={handleChange}
+                      placeholder="e.g., 10cm x 15cm x 5cm"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="features" className="block text-sm font-medium text-gray-700">
+                      Features <span className="text-gray-400 text-xs">(metadata only)</span>
+                    </label>
+                    <textarea
+                      id="features"
+                      name="features"
+                      rows={3}
+                      value={formData.features}
+                      onChange={handleChange}
+                      placeholder="Enter each feature on a new line"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="materials" className="block text-sm font-medium text-gray-700">
+                      Materials <span className="text-gray-400 text-xs">(metadata only)</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="materials"
+                      name="materials"
+                      value={formData.materials}
+                      onChange={handleChange}
+                      placeholder="e.g., Cedar wood, Brass, Leather"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                    />
+                  </div>
                   
                   <div className="flex items-start">
                     <div className="flex items-center h-5">
@@ -223,8 +286,10 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                       />
                     </div>
                     <div className="ml-3 text-sm">
-                      <label htmlFor="inStock" className="font-medium text-gray-700">In Stock</label>
-                      <p className="text-gray-500">Uncheck if this product is currently unavailable</p>
+                      <label htmlFor="inStock" className="font-medium text-gray-700">
+                        In Stock <span className="text-gray-400 text-xs">(metadata only)</span>
+                      </label>
+                      <p className="text-gray-500">This is for display purposes only</p>
                     </div>
                   </div>
                   

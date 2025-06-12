@@ -35,10 +35,7 @@ export interface SignupCredentials {
   role: UserRole;
 }
 
-export interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  error: string | null;
+export interface AuthContextType extends AuthState {
   login: (credentials: LoginCredentials) => Promise<void>;
   signup: (credentials: SignupCredentials) => Promise<void>;
   logout: () => void;
