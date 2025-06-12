@@ -105,10 +105,10 @@ export default function ArtisanDashboard() {
                   <div className="bg-white rounded-lg shadow-md p-6">
                     <p className="text-sm font-medium text-gray-500">Average Rating</p>
                     <p className="text-2xl font-bold text-gray-900 mt-2">
-                      {(
-                        artisan.products.reduce((sum, product) => sum + product.rating, 0) / 
+                      {artisan.products.length > 0 ? (
+                        artisan.products.reduce((sum, product) => sum + (product.rating || 0), 0) / 
                         artisan.products.length
-                      ).toFixed(1)}
+                      ).toFixed(1) : '0.0'}
                     </p>
                   </div>
                 </div>
@@ -214,7 +214,7 @@ export default function ArtisanDashboard() {
                                   </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  {product.rating.toFixed(1)}
+                                  {(product.rating || 0).toFixed(1)}
                                 </td>
                               </tr>
                             ))}

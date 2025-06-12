@@ -19,6 +19,7 @@ export interface User {
 export interface AuthState {
   user: User | null;
   isLoading: boolean;
+  token: string | null;
   error: string | null;
 }
 

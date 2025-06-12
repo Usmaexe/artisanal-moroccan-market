@@ -41,8 +41,10 @@ const mockUsers: User[] = [
   }
 ];
 
+// Updated initial state to include token
 const initialState: AuthState = {
   user: null,
+  token: null, // Add token to initial state
   isLoading: true,
   error: null
 };
@@ -69,12 +71,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         // In a real app, you might want to verify the token with the backend
         setState({
           user: JSON.parse(savedUser),
+          token: savedToken, // Include token in state
           isLoading: false,
           error: null
         });
       } else {
         setState({
           user: null,
+          token: null, // Include token in state
           isLoading: false,
           error: null
         });
@@ -82,6 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       setState({
         user: null,
+        token: null, // Include token in state
         isLoading: false,
         error: "Failed to retrieve session"
       });
@@ -95,11 +100,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // Check if it's a demo account first (for the demo buttons)
       const mockUser = mockUsers.find(u => u.email === credentials.email);
       if (mockUser && credentials.password === "password") {
+        const demoToken = 'demo-token';
         setToLocalStorage('morocco_craft_user', JSON.stringify(mockUser));
-        setToLocalStorage('morocco_craft_token', 'demo-token');
+        setToLocalStorage('morocco_craft_token', demoToken);
         
         setState({
           user: mockUser,
+          token: demoToken, // Include token in state
           isLoading: false,
           error: null
         });
@@ -148,6 +155,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       setState({
         user: data.user,
+        token: data.token, // Include token in state
         isLoading: false,
         error: null
       });
@@ -169,6 +177,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       setState({
         user: null,
+        token: null, // Include token in state
         isLoading: false,
         error: errorMessage
       });
@@ -210,6 +219,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       setState({
         user: null,
+        token: null, // Include token in state
         isLoading: false,
         error: errorMessage
       });
@@ -222,6 +232,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     removeFromLocalStorage('morocco_craft_token');
     setState({
       user: null,
+      token: null, // Include token in state
       isLoading: false,
       error: null
     });
@@ -232,7 +243,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider
       value={{
-        ...state,
+        ...state, // This now includes token
         login,
         signup,
         logout,

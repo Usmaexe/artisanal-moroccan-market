@@ -25,9 +25,18 @@ exports.getProductById = async (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
-    const data = req.body; // expect name, description, price, category_id, artisan_id, image_url
-    const product = await prismaProd.product.create({ data });
-    res.status(201).json(product);
+    // Extract data from request body
+    const { features, materials, ...productData } = req.body;
+    
+    // Create product without features and materials fields
+    const product = await prismaProd.product.create({ data: productData });
+    
+    // Return the created product with the features and materials (even though they're not stored in DB)
+    res.status(201).json({
+      ...product,
+      features,
+      materials
+    });
   } catch (err) {
     next(err);
   }
@@ -36,8 +45,19 @@ exports.createProduct = async (req, res, next) => {
 exports.updateProduct = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   try {
-    const product = await prismaProd.product.update({ where: { product_id: id }, data: req.body });
-    res.json(product);
+    // Extract features and materials from request body
+    const { features, materials, ...productData } = req.body;
+    
+    const product = await prismaProd.product.update({ 
+      where: { product_id: id }, 
+      data: productData 
+    });
+    
+    res.json({
+      ...product,
+      features,
+      materials
+    });
   } catch (err) {
     next(err);
   }
