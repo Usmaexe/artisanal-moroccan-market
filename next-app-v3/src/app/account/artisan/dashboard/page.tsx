@@ -8,58 +8,39 @@ import Image from "next/image";
 import axios from "axios";
 import { Package, ShoppingBag, BarChart, PlusCircle, Settings } from "lucide-react";
 
-interface DashboardStats {
-  totalProducts: number;
-  totalOrders: number;
-  revenue: string;
-  avgRating: number;
-}
-
-interface Product {
-  id: string;
+interface Artisan {
+  artisan_id: number;
   name: string;
-  price: number;
-  stock: number;
-  status: string;
-  sales: number;
-}
-
-interface Order {
-  id: string;
-  orderNumber: string;
-  productName: string;
-  status: string;
-  date: string;
-  amount: number;
+  bio: string;
+  image_url: string;
+  location: string;
+  products: {
+    product_id: number;
+    name: string;
+    price: string;
+    is_featured: boolean;
+    image_url: string;
+    rating: number;
+  }[];
 }
 
 export default function ArtisanDashboard() {
   const { user } = useAuth();
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [artisan, setArtisan] = useState<Artisan | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    const fetchArtisanData = async () => {
       try {
         setLoading(true);
         
-        // Fetch dashboard statistics
-        const statsResponse = await axios.get(`http://localhost:5000/api/artisans/${user?.id}/stats`);
-        setStats(statsResponse.data);
-
-        // Fetch products
-        const productsResponse = await axios.get(`http://localhost:5000/api/artisans/${user?.id}/products`);
-        setProducts(productsResponse.data);
-
-        // Fetch recent orders
-        const ordersResponse = await axios.get(`http://localhost:5000/api/artisans/${user?.id}/orders`);
-        setOrders(ordersResponse.data.slice(0, 2)); // Only show 2 most recent orders
+        // Fetch artisan data
+        const response = await axios.get(`http://localhost:5000/api/artisans/${user?.id}`);
+        setArtisan(response.data);
 
       } catch (err) {
-        setError("Failed to load dashboard data");
+        setError("Failed to load artisan data");
         console.error(err);
       } finally {
         setLoading(false);
@@ -67,7 +48,7 @@ export default function ArtisanDashboard() {
     };
 
     if (user?.id) {
-      fetchDashboardData();
+      fetchArtisanData();
     }
   }, [user?.id]);
 
@@ -83,12 +64,6 @@ export default function ArtisanDashboard() {
       href: "/account/artisan/products/new",
       icon: <PlusCircle className="h-6 w-6 text-amber-600" />,
       description: "Create a new product listing"
-    },
-    {
-      title: "Orders",
-      href: "/account/artisan/orders",
-      icon: <ShoppingBag className="h-6 w-6 text-amber-600" />,
-      description: "View and manage customer orders"
     },
     {
       title: "Analytics",
@@ -112,20 +87,30 @@ export default function ArtisanDashboard() {
               <div className="text-center py-8">Loading dashboard...</div>
             ) : error ? (
               <div className="text-center py-8 text-red-600">{error}</div>
-            ) : (
+            ) : artisan ? (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                  {stats && [
-                    { label: "Total Products", value: stats.totalProducts },
-                    { label: "Total Orders", value: stats.totalOrders },
-                    { label: "Revenue", value: stats.revenue },
-                    { label: "Avg. Rating", value: stats.avgRating.toFixed(1) }
-                  ].map((stat, index) => (
-                    <div key={index} className="bg-white rounded-lg shadow-md p-6">
-                      <p className="text-sm font-medium text-gray-500">{stat.label}</p>
-                      <p className="text-2xl font-bold text-gray-900 mt-2">{stat.value}</p>
-                    </div>
-                  ))}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="bg-white rounded-lg shadow-md p-6">
+                    <p className="text-sm font-medium text-gray-500">Total Products</p>
+                    <p className="text-2xl font-bold text-gray-900 mt-2">
+                      {artisan.products.length}
+                    </p>
+                  </div>
+                  <div className="bg-white rounded-lg shadow-md p-6">
+                    <p className="text-sm font-medium text-gray-500">Featured Products</p>
+                    <p className="text-2xl font-bold text-gray-900 mt-2">
+                      {artisan.products.filter(p => p.is_featured).length}
+                    </p>
+                  </div>
+                  <div className="bg-white rounded-lg shadow-md p-6">
+                    <p className="text-sm font-medium text-gray-500">Average Rating</p>
+                    <p className="text-2xl font-bold text-gray-900 mt-2">
+                      {(
+                        artisan.products.reduce((sum, product) => sum + product.rating, 0) / 
+                        artisan.products.length
+                      ).toFixed(1)}
+                    </p>
+                  </div>
                 </div>
 
                 <div className="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -133,24 +118,18 @@ export default function ArtisanDashboard() {
                   <div className="flex flex-col sm:flex-row">
                     <div className="mb-4 sm:mb-0 sm:mr-6">
                       <div className="relative h-20 w-20 rounded-full overflow-hidden border-2 border-amber-500">
-                        {user?.image ? (
-                          <Image
-                            src={user.image}
-                            alt={user.name}
-                            fill
-                            style={{ objectFit: "cover" }}
-                          />
-                        ) : (
-                          <div className="h-full w-full bg-amber-100 flex items-center justify-center">
-                            <Package className="h-10 w-10 text-amber-600" />
-                          </div>
-                        )}
+                        <Image
+                          src={artisan.image_url}
+                          alt={artisan.name}
+                          fill
+                          style={{ objectFit: "cover" }}
+                        />
                       </div>
                     </div>
                     <div>
-                      <p><span className="font-medium">Name:</span> {user?.name}</p>
-                      <p><span className="font-medium">Email:</span> {user?.email}</p>
-                      <p><span className="font-medium">Role:</span> <span className="capitalize">{user?.role}</span></p>
+                      <p><span className="font-medium">Name:</span> {artisan.name}</p>
+                      <p><span className="font-medium">Bio:</span> {artisan.bio}</p>
+                      <p><span className="font-medium">Location:</span> {artisan.location}</p>
                     </div>
                   </div>
                 </div>
@@ -182,40 +161,6 @@ export default function ArtisanDashboard() {
                         ))}
                       </div>
                     </div>
-
-                    <div className="bg-white rounded-lg shadow-md p-6">
-                      <div className="flex items-center mb-4">
-                        <ShoppingBag className="h-6 w-6 text-amber-600 mr-2" />
-                        <h2 className="text-xl font-semibold text-gray-800">Recent Orders</h2>
-                      </div>
-                      <div className="space-y-3">
-                        {orders.map((order) => (
-                          <div key={order.id} className="p-3 bg-amber-50 rounded-lg">
-                            <div className="flex justify-between mb-1">
-                              <span className="font-medium">{order.orderNumber}</span>
-                              <span className={`text-xs px-2 py-1 rounded ${
-                                order.status === 'Shipped' ? 'bg-green-100 text-green-800' : 
-                                order.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-gray-100 text-gray-800'
-                              }`}>
-                                {order.status}
-                              </span>
-                            </div>
-                            <p className="text-sm">{order.productName}</p>
-                            <div className="flex justify-between mt-2 text-xs text-gray-500">
-                              <span>{order.date}</span>
-                              <span>${order.amount.toFixed(2)}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <Link
-                        href="/account/artisan/orders"
-                        className="mt-4 text-sm font-medium text-amber-600 hover:text-amber-700 flex justify-center"
-                      >
-                        View all orders
-                      </Link>
-                    </div>
                   </div>
 
                   <div className="md:col-span-8">
@@ -244,38 +189,32 @@ export default function ArtisanDashboard() {
                                 Price
                               </th>
                               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Stock
-                              </th>
-                              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Status
                               </th>
                               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Sales
+                                Rating
                               </th>
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
-                            {products.map((product) => (
-                              <tr key={product.id} className="hover:bg-amber-50">
+                            {artisan.products.map((product) => (
+                              <tr key={product.product_id} className="hover:bg-amber-50">
                                 <td className="px-6 py-4 whitespace-nowrap">
                                   <div className="font-medium text-gray-900">{product.name}</div>
-                                  <div className="text-sm text-gray-500">ID: {product.id}</div>
+                                  <div className="text-sm text-gray-500">ID: {product.product_id}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  ${product.price.toFixed(2)}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  {product.stock}
+                                  ${product.price}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                    product.status === "Active" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                                    product.is_featured ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
                                   }`}>
-                                    {product.status}
+                                    {product.is_featured ? "Featured" : "Regular"}
                                   </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  {product.sales}
+                                  {product.rating.toFixed(1)}
                                 </td>
                               </tr>
                             ))}
@@ -293,7 +232,7 @@ export default function ArtisanDashboard() {
                   </div>
                 </div>
               </>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

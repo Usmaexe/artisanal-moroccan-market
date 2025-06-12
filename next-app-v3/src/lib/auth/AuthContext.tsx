@@ -13,7 +13,10 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { getFromLocalStorage, setToLocalStorage, removeFromLocalStorage } from "./storage";
 
-// Mock users for frontend demonstration
+// API base URL - adjust this to match your backend
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
+// Mock users for demo buttons only
 const mockUsers: User[] = [
   {
     id: "1",
@@ -59,10 +62,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setState(prev => ({ ...prev, isLoading: true }));
     
     try {
-      // In a real app, this would be an API call to verify the session
       const savedUser = getFromLocalStorage('morocco_craft_user');
+      const savedToken = getFromLocalStorage('morocco_craft_token');
       
-      if (savedUser) {
+      if (savedUser && savedToken) {
+        // In a real app, you might want to verify the token with the backend
         setState({
           user: JSON.parse(savedUser),
           isLoading: false,
@@ -88,47 +92,87 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock authentication logic
-      const user = mockUsers.find(u => u.email === credentials.email);
-      
-      if (user && credentials.password === "password") {
-        // For demo purposes, any password is "password"
-        setToLocalStorage('morocco_craft_user', JSON.stringify(user));
+      // Check if it's a demo account first (for the demo buttons)
+      const mockUser = mockUsers.find(u => u.email === credentials.email);
+      if (mockUser && credentials.password === "password") {
+        setToLocalStorage('morocco_craft_user', JSON.stringify(mockUser));
+        setToLocalStorage('morocco_craft_token', 'demo-token');
         
         setState({
-          user,
+          user: mockUser,
           isLoading: false,
           error: null
         });
 
-        toast.success(`Welcome back, ${user.name}!`);
+        toast.success(`Welcome back, ${mockUser.name}!`);
         
         // Redirect based on role
-        if (user.role === "admin") {
+        if (mockUser.role === "admin") {
           router.push("/account/admin/dashboard");
-        } else if (user.role === "artisan") {
+        } else if (mockUser.role === "artisan") {
           router.push("/account/artisan/dashboard");
         } else {
           router.push("/account/dashboard");
         }
-      } else {
-        setState({
-          user: null,
-          isLoading: false,
-          error: "Invalid email or password"
-        });
-        toast.error("Invalid email or password");
+        return;
       }
+
+      // Real backend authentication
+      console.log('Making API call to:', `${API_BASE_URL}/auth/login`);
+      console.log('With credentials:', { email: credentials.email, password: '[HIDDEN]' });
+
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      });
+
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
+      const data = await response.json();
+      console.log('Response data:', data);
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      // Save user data and token
+      setToLocalStorage('morocco_craft_user', JSON.stringify(data.user));
+      setToLocalStorage('morocco_craft_token', data.token);
+      
+      setState({
+        user: data.user,
+        isLoading: false,
+        error: null
+      });
+
+      toast.success(`Welcome back, ${data.user.name}!`);
+      
+      // Redirect based on role
+      if (data.user.role === "admin") {
+        router.push("/account/admin/dashboard");
+      } else if (data.user.role === "artisan") {
+        router.push("/account/artisan/dashboard");
+      } else {
+        router.push("/account/dashboard");
+      }
+
     } catch (error) {
+      console.error('Login error:', error);
+      const errorMessage = error instanceof Error ? error.message : "Login failed. Please try again.";
+      
       setState({
         user: null,
         isLoading: false,
-        error: "Login failed. Please try again."
+        error: errorMessage
       });
-      toast.error("Login failed. Please try again.");
+      toast.error(errorMessage);
     }
   };
 
@@ -136,59 +180,46 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock signup logic
-      if (mockUsers.some(u => u.email === credentials.email)) {
-        setState({
-          user: null,
-          isLoading: false,
-          error: "Email already in use"
-        });
-        toast.error("Email already in use");
-        return;
-      }
-      
-      const newUser: User = {
-        id: `user-${Date.now()}`,
-        name: credentials.name,
-        email: credentials.email,
-        role: credentials.role,
-        image: "https://images.unsplash.com/photo-1534751516642-a1af1ef26a56" // Default image
-      };
-      
-      // In a real app, we would save to the database here
-      setToLocalStorage('morocco_craft_user', JSON.stringify(newUser));
-      
-      setState({
-        user: newUser,
-        isLoading: false,
-        error: null
+      console.log('Making API call to:', `${API_BASE_URL}/auth/register`);
+
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: credentials.name,
+          email: credentials.email,
+          password: credentials.password,
+          role: credentials.role,
+        }),
       });
-      
-      toast.success("Account created successfully!");
-      
-      // Redirect based on role
-      if (newUser.role === "admin") {
-        router.push("/account/admin/dashboard");
-      } else if (newUser.role === "artisan") {
-        router.push("/account/artisan/dashboard");
-      } else {
-        router.push("/account/dashboard");
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Signup failed');
       }
+
+      // After successful registration, log the user in
+      await login({ email: credentials.email, password: credentials.password });
+
     } catch (error) {
+      console.error('Signup error:', error);
+      const errorMessage = error instanceof Error ? error.message : "Signup failed. Please try again.";
+      
       setState({
         user: null,
         isLoading: false,
-        error: "Signup failed. Please try again."
+        error: errorMessage
       });
-      toast.error("Signup failed. Please try again.");
+      toast.error(errorMessage);
     }
   };
 
   const logout = () => {
     removeFromLocalStorage('morocco_craft_user');
+    removeFromLocalStorage('morocco_craft_token');
     setState({
       user: null,
       isLoading: false,
@@ -221,4 +252,4 @@ export const useAuth = (): AuthContextType => {
   }
   
   return context;
-}; 
+};

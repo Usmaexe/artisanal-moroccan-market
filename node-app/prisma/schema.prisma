@@ -37,6 +37,8 @@ model Category {
 model Artisan {
   artisan_id   Int      @id @default(autoincrement())
   name         String
+  email        String   @unique
+  password_hash String
   bio          String
   image_url    String
   location     String
@@ -47,6 +49,7 @@ model Customer {
   customer_id    Int      @id @default(autoincrement())
   email          String   @unique
   password_hash  String
+  name           String?
   reviews        Review[]
   orders         Order[]
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -29,7 +29,7 @@ export default function SignupPage() {
     setError(null);
     
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/signup", {
+      const response = await axios.post("http://localhost:5000/api/auth/register", {
         name: data.name,
         email: data.email,
         password: data.password,
@@ -37,7 +37,7 @@ export default function SignupPage() {
       });
 
       if (response.status === 201) {
-        router.push("/auth/login");
+        router.push(`/auth/login?email=${encodeURIComponent(data.email)}`);
       }
     } catch (err: any) {
       setError(err.response?.data?.message || "Registration failed. Please try again.");
