@@ -64,12 +64,6 @@ export default function ArtisanDashboard() {
       href: "/account/artisan/products/new",
       icon: <PlusCircle className="h-6 w-6 text-amber-600" />,
       description: "Create a new product listing"
-    },
-    {
-      title: "Analytics",
-      href: "/account/artisan/analytics",
-      icon: <BarChart className="h-6 w-6 text-amber-600" />,
-      description: "View sales and performance metrics"
     }
   ];
 
@@ -126,7 +120,7 @@ export default function ArtisanDashboard() {
                         />
                       </div>
                     </div>
-                    <div>
+                    <div className="text-gray-800">
                       <p><span className="font-medium">Name:</span> {artisan.name}</p>
                       <p><span className="font-medium">Bio:</span> {artisan.bio}</p>
                       <p><span className="font-medium">Location:</span> {artisan.location}</p>
@@ -139,9 +133,9 @@ export default function ArtisanDashboard() {
                     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                       <div className="flex items-center justify-between mb-4">
                         <h2 className="text-xl font-semibold text-gray-800">Quick Actions</h2>
-                        <Link href="/account/artisan/settings">
+                        {/* <Link href="/account/artisan/settings">
                           <Settings className="h-5 w-5 text-gray-400 hover:text-amber-600" />
-                        </Link>
+                        </Link> */}
                       </div>
                       <div className="space-y-3">
                         {artisanNavItems.map((item) => (
@@ -204,7 +198,7 @@ export default function ArtisanDashboard() {
                                   <div className="text-sm text-gray-500">ID: {product.product_id}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  ${product.price}
+                                  {product.price} DH
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${

@@ -175,7 +175,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block text-gray-900 w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                     />
                   </div>
                   
@@ -188,7 +188,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       value={formData.description}
                       onChange={handleChange}
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block text-gray-900 w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                     />
                   </div>
                   
@@ -207,7 +207,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                         value={formData.price}
                         onChange={handleChange}
                         required
-                        className="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                        className="pl-10 mt-1 block text-gray-900 w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                       />
                     </div>
                   </div>
@@ -220,7 +220,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       value={formData.categoryId}
                       onChange={handleChange}
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block w-full text-gray-900 rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                     >
                       <option value="">Select a category</option>
                       {categories.map(category => (
@@ -240,7 +240,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       value={formData.dimensions}
                       onChange={handleChange}
                       placeholder="e.g., 10cm x 15cm x 5cm"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 text-gray-900 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                     />
                   </div>
 
@@ -255,7 +255,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       value={formData.features}
                       onChange={handleChange}
                       placeholder="Enter each feature on a new line"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 text-gray-900 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                     />
                   </div>
 
@@ -270,7 +270,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       value={formData.materials}
                       onChange={handleChange}
                       placeholder="e.g., Cedar wood, Brass, Leather"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 text-gray-900 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                     />
                   </div>
                   
@@ -282,7 +282,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                         type="checkbox"
                         checked={formData.inStock}
                         onChange={handleChange}
-                        className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
+                        className="h-4 w-4 text-amber-600 focus:ring-amber-500 text-gray-900 border-gray-300 rounded"
                       />
                     </div>
                     <div className="ml-3 text-sm">
@@ -297,7 +297,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="inline-flex justify-center py-2 px-4 border text-gray-900 border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? "Saving..." : "Save Changes"}
                     </button>
