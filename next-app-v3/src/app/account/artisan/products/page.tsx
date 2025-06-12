@@ -141,11 +141,11 @@ export default function ArtisanProductsPage() {
                             <div className="text-sm text-gray-900">
                               {product.isOnSale ? (
                                 <div className="flex items-center gap-2">
-                                  <span className="text-amber-600 font-bold">${product.salePrice}</span>
-                                  <span className="text-gray-500 text-sm line-through">${product.price}</span>
+                                  <span className="text-amber-600 font-bold">{product.salePrice} DH</span>
+                                  <span className="text-gray-500 text-sm line-through">{product.price} DH</span>
                                 </div>
                               ) : (
-                                <span className="text-amber-600 font-bold">${product.price}</span>
+                                <span className="text-amber-600 font-bold">{product.price} DH</span>
                               )}
                             </div>
                           </td>

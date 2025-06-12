@@ -193,10 +193,10 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                   </div>
                   
                   <div>
-                    <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price (USD) *</label>
+                    <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price (DH) *</label>
                     <div className="mt-1 relative rounded-md shadow-sm">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-gray-500 sm:text-sm">$</span>
+                        <span className="text-gray-500 sm:text-sm">DH</span>
                       </div>
                       <input
                         type="number"
@@ -231,7 +231,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
                   <div>
                     <label htmlFor="dimensions" className="block text-sm font-medium text-gray-700">
-                      Dimensions <span className="text-gray-400 text-xs">(metadata only)</span>
+                      Dimensions <span className="text-gray-400 text-xs"></span>
                     </label>
                     <input
                       type="text"
@@ -246,7 +246,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
                   <div>
                     <label htmlFor="features" className="block text-sm font-medium text-gray-700">
-                      Features <span className="text-gray-400 text-xs">(metadata only)</span>
+                      Features <span className="text-gray-400 text-xs"></span>
                     </label>
                     <textarea
                       id="features"
@@ -261,7 +261,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
                   <div>
                     <label htmlFor="materials" className="block text-sm font-medium text-gray-700">
-                      Materials <span className="text-gray-400 text-xs">(metadata only)</span>
+                      Materials <span className="text-gray-400 text-xs"></span>
                     </label>
                     <input
                       type="text"
@@ -287,9 +287,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                     </div>
                     <div className="ml-3 text-sm">
                       <label htmlFor="inStock" className="font-medium text-gray-700">
-                        In Stock <span className="text-gray-400 text-xs">(metadata only)</span>
+                        In Stock <span className="text-gray-400 text-xs"></span>
                       </label>
-                      <p className="text-gray-500">This is for display purposes only</p>
                     </div>
                   </div>
                   
