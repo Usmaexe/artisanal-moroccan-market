@@ -1,49 +1,51 @@
 "use client";
 
-import { useState } from "react";
-import { useAuth } from "@/lib/auth/AuthContext";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { UserRole } from "@/lib/auth/types";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 type SignupFormData = {
   name: string;
   email: string;
   password: string;
   confirmPassword: string;
-  role: UserRole;
+  role: "customer" | "artisan";
 };
 
 export default function SignupPage() {
-  const { signup, user, isLoading } = useAuth();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { register, handleSubmit, watch, formState: { errors } } = useForm<SignupFormData>({
     defaultValues: {
       role: "customer"
     }
   });
-  
-  // If already logged in, redirect to appropriate dashboard
-  if (user) {
-    if (user.role === "admin") {
-      router.push("/account/admin/dashboard");
-    } else if (user.role === "artisan") {
-      router.push("/account/artisan/dashboard");
-    } else {
-      router.push("/account/dashboard");
-    }
-  }
-  
+
   const onSubmit = async (data: SignupFormData) => {
-    await signup({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      role: data.role,
-    });
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/signup", {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        role: data.role
+      });
+
+      if (response.status === 201) {
+        router.push("/auth/login");
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Registration failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
-  
+
   const password = watch("password");
 
   return (
@@ -65,6 +67,11 @@ export default function SignupPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-md text-sm">
+              {error}
+            </div>
+          )}
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -209,4 +216,4 @@ export default function SignupPage() {
       </div>
     </div>
   );
-} 
+}

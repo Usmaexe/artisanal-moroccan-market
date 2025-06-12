@@ -70,7 +70,7 @@ export default function CartPage() {
                                 {item.product.name}
                               </Link>
                             </h3>
-                            <p className="ml-4">${(item.product.price * item.quantity).toFixed(2)}</p>
+                            <p className="ml-4">{(item.product.price * item.quantity).toFixed(2)} DH</p>
                           </div>
                           <p className="mt-1 text-sm text-amber-600">
                             By {item.product.artisan.name}
@@ -119,20 +119,20 @@ export default function CartPage() {
               <div className="border-t border-gray-200 py-4">
               <div className="flex justify-between mb-2">
                 <p className="text-sm text-amber-600">Subtotal</p>
-                <p className="text-sm font-medium text-amber-800">${getCartTotal().toFixed(2)}</p>
+                <p className="text-sm font-medium text-amber-800">{getCartTotal().toFixed(2)} DH</p>
               </div>
               <div className="flex justify-between mb-2">
                 <p className="text-sm text-amber-600">Shipping</p>
-                <p className="text-sm font-medium text-amber-800">$10.00</p>
+                <p className="text-sm font-medium text-amber-800">10.00 DH</p>
               </div>
               <div className="flex justify-between mb-2">
                 <p className="text-sm text-amber-600">Tax</p>
-                <p className="text-sm font-medium text-amber-800">${(getCartTotal() * 0.05).toFixed(2)}</p>
+                <p className="text-sm font-medium text-amber-800">{(getCartTotal() * 0.05).toFixed(2)} DH</p>
               </div>
               <div className="flex justify-between pt-4 border-t border-gray-200">
                 <p className="text-base font-medium text-amber-800">Total</p>
                 <p className="text-base font-medium text-amber-800">
-                  ${(getCartTotal() + 10 + getCartTotal() * 0.05).toFixed(2)}
+                  {(getCartTotal() + 10 + getCartTotal() * 0.05).toFixed(2)} DH
                 </p>
               </div>
             </div>
