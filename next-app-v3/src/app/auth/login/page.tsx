@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/lib/auth/AuthContext";
 import Link from "next/link";
 import Image from "next/image";
@@ -18,15 +18,17 @@ export default function LoginPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
   
   // If already logged in, redirect to appropriate dashboard
-  if (user) {
-    if (user.role === "admin") {
-      router.push("/account/admin/dashboard");
-    } else if (user.role === "artisan") {
-      router.push("/account/artisan/dashboard");
-    } else {
-      router.push("/account/dashboard");
+  useEffect(() => {
+    if (user) {
+      if (user.role === "admin") {
+        router.push("/account/admin/dashboard");
+      } else if (user.role === "artisan") {
+        router.push("/account/artisan/dashboard");
+      } else {
+        router.push("/account/dashboard");
+      }
     }
-  }
+  }, [user, router]);
   
   const onSubmit = async (data: LoginFormData) => {
     await login({

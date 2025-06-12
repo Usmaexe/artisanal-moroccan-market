@@ -113,7 +113,7 @@ export default function NewProductPage() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 text-amber-600"
                     />
                   </div>
                   
@@ -126,7 +126,7 @@ export default function NewProductPage() {
                       value={formData.description}
                       onChange={handleChange}
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 text-amber-600"
                     />
                   </div>
                   
@@ -145,7 +145,7 @@ export default function NewProductPage() {
                         value={formData.price}
                         onChange={handleChange}
                         required
-                        className="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                        className="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 text-amber-600"
                       />
                     </div>
                   </div>
@@ -158,7 +158,7 @@ export default function NewProductPage() {
                       value={formData.categoryId}
                       onChange={handleChange}
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 text-amber-600"
                     >
                       <option value="">Select a category</option>
                       {categories.map(category => (
