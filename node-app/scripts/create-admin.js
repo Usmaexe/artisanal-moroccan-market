@@ -1,4 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
+// Import PrismaClient from the custom output directory
+const { PrismaClient } = require('../generated/prisma');
 const bcrypt = require('bcrypt');
 
 // Create a new PrismaClient instance

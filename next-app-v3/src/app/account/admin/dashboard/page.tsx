@@ -21,7 +21,7 @@ export default function AdminDashboard() {
     totalProducts: 0,
     totalUsers: 0,
     newOrders: 0,
-    revenue: "$0"
+    revenue: "0 DH"
   });
   
   const [recentUsers, setRecentUsers] = useState<any[]>([]);
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
           totalProducts: productsCount,
           totalUsers: usersCount,
           newOrders: newOrdersCount,
-          revenue: `$${totalRevenue.toFixed(2)}`
+          revenue: `${totalRevenue.toFixed(2)} DH`
         });
         
         // Get recent users (combine customers and artisans, sort by most recent)
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
             id: product.product_id,
             name: product.name,
             sales: Math.floor(Math.random() * 100), // In a real app, this would come from order data
-            price: `$${parseFloat(product.price).toFixed(2)}`,
+            price: `${parseFloat(product.price).toFixed(2)} DH`,
             image: product.image_url
           }));
         
