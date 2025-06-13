@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
 import { notFound } from "next/navigation";
-import ProductActions from "@/components/products/ProductActions";
+import ProductDetails from "@/components/products/ProductDetails";
 import ProductReviews from "@/components/products/ProductReviews";
 import ArtisanInfo from "@/components/products/ArtisanInfo";
 import { Product } from "@/types";
@@ -93,77 +93,11 @@ export default function ProductPage({ params }: ProductPageProps) {
   if (!product) {
     notFound();
   }
-
   return (
     <div className="bg-amber-50 py-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <nav className="mb-6 text-sm">
-          <ol className="flex items-center space-x-2">
-            <li>
-              <Link href="/" className="text-amber-600 hover:text-amber-800">
-                Home
-              </Link>
-            </li>
-            <li className="text-amber-600">/</li>
-            <li>
-              <Link href="/products" className="text-amber-600 hover:text-amber-800">
-                Products
-              </Link>
-            </li>
-            <li className="text-amber-600">/</li>
-            <li>
-              <Link 
-                href={`/categories/${product.category.slug}`} 
-                className="text-amber-600 hover:text-amber-800"
-              >
-                {product.category.name}
-              </Link>
-            </li>
-            <li className="text-amber-600">/</li>
-            <li className="text-amber-800 font-medium">{product.name}</li>
-          </ol>
-        </nav>
-
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="grid md:grid-cols-2 gap-8 p-6">
-            <div className="space-y-4">
-              <div className="relative h-80 rounded-lg overflow-hidden">
-                <Image
-                  src={product.images[0]}
-                  alt={product.name}
-                  fill
-                  style={{ objectFit: "cover" }}
-                  priority
-                />
-                {product.isOnSale && (
-                  <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-md font-bold">
-                    SALE
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                {product.name}
-              </h1>
-              
-              <div className="mb-6">
-                <span className="text-2xl font-bold text-amber-600">
-                  {product.price} DH
-                </span>
-              </div>
-              
-              <p className="text-gray-600 mb-6">
-                {product.description}
-              </p>
-
-              <ProductActions product={product} />
-            </div>
-          </div>        </div>
-
+        <ProductDetails product={product} />
         <ArtisanInfo artisan={product.artisan} />
-
         <ProductReviews 
           productId={product.id} 
           productName={product.name}

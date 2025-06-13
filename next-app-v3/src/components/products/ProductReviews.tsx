@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { useAuth } from "@/lib/auth/AuthContext";
+import { toast } from "react-hot-toast";
 
 interface Review {
   review_id: number;
@@ -24,11 +25,10 @@ interface ProductReviewsProps {
 }
 
 export default function ProductReviews({ productId, productName }: ProductReviewsProps) {
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState<Review[]>([]);  const [loading, setLoading] = useState(true);
   const [showAddReview, setShowAddReview] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   
   const [newReview, setNewReview] = useState({
     rating: 5,
@@ -53,16 +53,15 @@ export default function ProductReviews({ productId, productName }: ProductReview
   useEffect(() => {
     fetchReviews();
   }, [productId]);
-
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
-      alert("Please login to add a review");
+      toast.error("Please login to add a review");
       return;
     }
 
     if (!newReview.comment.trim()) {
-      alert("Please add a comment");
+      toast.error("Please add a comment");
       return;
     }
 
@@ -75,7 +74,16 @@ export default function ProductReviews({ productId, productName }: ProductReview
         comment: newReview.comment.trim()
       };
 
-      await axios.post("http://localhost:5000/api/reviews", reviewData);
+      // Include authentication headers
+      const headers: any = {
+        'Content-Type': 'application/json'
+      };
+
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      await axios.post("http://localhost:5000/api/reviews", reviewData, { headers });
       
       // Reset form
       setNewReview({ rating: 5, comment: "" });
@@ -84,10 +92,14 @@ export default function ProductReviews({ productId, productName }: ProductReview
       // Refresh reviews
       await fetchReviews();
       
-      alert("Review added successfully!");
+      toast.success("Review added successfully!");
     } catch (error) {
       console.error("Error adding review:", error);
-      alert("Error adding review. Please try again.");
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        toast.error("Please login to add a review");
+      } else {
+        toast.error("Error adding review. Please try again.");
+      }
     } finally {
       setSubmitting(false);
     }
