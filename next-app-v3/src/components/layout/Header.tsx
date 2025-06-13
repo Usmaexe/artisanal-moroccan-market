@@ -8,6 +8,8 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import Image from "next/image";
 import CartIndicator from "./CartIndicator";
 import WishlistIndicator from "./WishlistIndicator";
+import SearchIndicator from "./SearchIndicator";
+import SearchModal from "./SearchModal";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -81,6 +83,7 @@ const Header = () => {
           {/* User actions */}
           <div className="hidden md:flex items-center space-x-4">
             <div className="flex items-center">
+              <SearchIndicator />
               <WishlistIndicator />
               <CartIndicator />
             </div>
@@ -228,9 +231,9 @@ const Header = () => {
                 </div>
               </>
             )}
-            
-            <div className="flex items-center space-x-4 mt-4 pt-4 border-t border-gray-200">
+              <div className="flex items-center space-x-4 mt-4 pt-4 border-t border-gray-200">
               <div className="flex items-center" onClick={() => setIsMenuOpen(false)}>
+                <SearchIndicator />
                 <WishlistIndicator />
                 <CartIndicator />
               </div>
@@ -255,8 +258,8 @@ const Header = () => {
               )}
             </div>
           </div>
-        </div>
-      )}
+        </div>      )}
+      <SearchModal />
     </header>
   );
 };
