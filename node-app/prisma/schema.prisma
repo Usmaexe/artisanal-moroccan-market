@@ -54,6 +54,14 @@ model Customer {
   orders         Order[]
 }
 
+model Admin {
+  admin_id      Int      @id @default(autoincrement())
+  email         String   @unique
+  password_hash String
+  name          String
+  created_at    DateTime @default(now())
+}
+
 model Order {
   order_id     Int      @id @default(autoincrement())
   status       String   @default("pending")

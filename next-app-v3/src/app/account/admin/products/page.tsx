@@ -1,80 +1,87 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { useAuth } from "@/lib/auth/AuthContext";
 import Link from "next/link";
-import { Package, Plus, Search, Filter, Edit, Trash2 } from "lucide-react";
+import { Package, Plus, Search, Filter, Edit, Trash2, Loader } from "lucide-react";
+import { getProducts, deleteProduct } from "@/lib/api/products";
+import { toast } from "react-hot-toast";
+
+interface Product {
+  product_id: number;
+  name: string;
+  price: number;
+  category: {
+    name: string;
+  };
+  artisan: {
+    name: string;
+  };
+  stock?: number;
+  status?: string;
+}
 
 export default function AdminProducts() {
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState("All");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock product data
-  const products = [
-    {
-      id: "p1",
-      name: "Handmade Ceramic Tajine",
-      price: 89.99,
-      category: "Kitchen",
-      artisan: "Mohammed Alaoui",
-      stock: 15,
-      status: "Active",
-    },
-    {
-      id: "p2",
-      name: "Moroccan Leather Pouf",
-      price: 129.99,
-      category: "Home Decor",
-      artisan: "Fatima Zahra",
-      stock: 8,
-      status: "Active",
-    },
-    {
-      id: "p3",
-      name: "Hand-woven Berber Carpet",
-      price: 349.99,
-      category: "Home Decor",
-      artisan: "Ahmed Bensouda",
-      stock: 3,
-      status: "Low Stock",
-    },
-    {
-      id: "p4",
-      name: "Argan Oil Body Wash",
-      price: 24.99,
-      category: "Beauty",
-      artisan: "Amina El Mansouri",
-      stock: 42,
-      status: "Active",
-    },
-    {
-      id: "p5",
-      name: "Moroccan Brass Lantern",
-      price: 79.99,
-      category: "Lighting",
-      artisan: "Youssef Hakimi",
-      stock: 11,
-      status: "Active",
-    },
-  ];
+  // Fetch products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getProducts();
+        setProducts(data);
+        
+        // Extract unique categories
+        const uniqueCategories = ["All", ...new Set(data.map((product: Product) => product.category.name))];
+        setCategories(uniqueCategories);
+        
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setError("Failed to load products. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   // Filter products based on search and category
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                        product.artisan.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = filterCategory === "All" || product.category === filterCategory;
+                        product.artisan.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = filterCategory === "All" || product.category.name === filterCategory;
     return matchesSearch && matchesCategory;
   });
 
-  // Unique categories for filter
-  const categories = ["All", ...new Set(products.map(product => product.category))];
+  // Handle product deletion
+  const handleDeleteProduct = async (id: number) => {
+    if (window.confirm(`Are you sure you want to delete this product?`)) {
+      try {
+        await deleteProduct(id.toString());
+        setProducts(products.filter(product => product.product_id !== id));
+        toast.success("Product deleted successfully");
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        toast.error("Failed to delete product");
+      }
+    }
+  };
 
-  // Mock function to handle product deletion
-  const handleDeleteProduct = (id: string) => {
-    alert(`Delete product with ID: ${id}`);
-    // In a real app, this would call an API endpoint
+  // Determine product status based on stock
+  const getProductStatus = (product: Product) => {
+    if (product.status) return product.status;
+    if (product.stock === undefined) return "Active";
+    return product.stock > 5 ? "Active" : "Low Stock";
   };
 
   return (
@@ -125,99 +132,108 @@ export default function AdminProducts() {
                 </div>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Product
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Category
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Price
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Artisan
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Stock
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {filteredProducts.length > 0 ? (
-                      filteredProducts.map((product) => (
-                        <tr key={product.id} className="hover:bg-amber-50">
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="h-10 w-10 bg-amber-100 rounded-md flex items-center justify-center mr-3">
-                                <Package className="h-6 w-6 text-amber-600" />
+              {isLoading ? (
+                <div className="flex justify-center items-center py-20">
+                  <Loader className="h-8 w-8 text-amber-600 animate-spin" />
+                  <span className="ml-2 text-gray-600">Loading products...</span>
+                </div>
+              ) : error ? (
+                <div className="text-center py-10 text-red-500">{error}</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Product
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Category
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Price
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Artisan
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Stock
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {filteredProducts.length > 0 ? (
+                        filteredProducts.map((product) => (
+                          <tr key={product.product_id} className="hover:bg-amber-50">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div className="h-10 w-10 bg-amber-100 rounded-md flex items-center justify-center mr-3">
+                                  <Package className="h-6 w-6 text-amber-600" />
+                                </div>
+                                <div>
+                                  <div className="font-medium text-gray-900">{product.name}</div>
+                                  <div className="text-sm text-gray-500">ID: {product.product_id}</div>
+                                </div>
                               </div>
-                              <div>
-                                <div className="font-medium text-gray-900">{product.name}</div>
-                                <div className="text-sm text-gray-500">ID: {product.id}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {product.category.name}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              ${parseFloat(product.price.toString()).toFixed(2)}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {product.artisan.name}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {product.stock || "N/A"}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                getProductStatus(product) === "Active" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                              }`}>
+                                {getProductStatus(product)}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <div className="flex justify-end space-x-3">
+                                <Link 
+                                  href={`/account/admin/products/edit/${product.product_id}`}
+                                  className="text-amber-600 hover:text-amber-800"
+                                >
+                                  <Edit className="h-5 w-5" />
+                                </Link>
+                                <button 
+                                  onClick={() => handleDeleteProduct(product.product_id)}
+                                  className="text-red-600 hover:text-red-800"
+                                >
+                                  <Trash2 className="h-5 w-5" />
+                                </button>
                               </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {product.category}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            ${product.price.toFixed(2)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {product.artisan}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {product.stock}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              product.status === "Active" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
-                            }`}>
-                              {product.status}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div className="flex justify-end space-x-3">
-                              <Link 
-                                href={`/account/admin/products/edit/${product.id}`}
-                                className="text-amber-600 hover:text-amber-800"
-                              >
-                                <Edit className="h-5 w-5" />
-                              </Link>
-                              <button 
-                                onClick={() => handleDeleteProduct(product.id)}
-                                className="text-red-600 hover:text-red-800"
-                              >
-                                <Trash2 className="h-5 w-5" />
-                              </button>
-                            </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                            No products found matching your search.
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
-                          No products found matching your search.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
     </ProtectedRoute>
   );
-} 
+}

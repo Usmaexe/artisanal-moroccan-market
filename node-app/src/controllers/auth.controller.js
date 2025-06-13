@@ -13,43 +13,104 @@ function debugAuth(message, data = {}) {
 exports.register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
-    
+
+    // Validate required fields
     if (!name || !email || !password || !role) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    const hash = await bcrypt.hash(password.trim(), SALT_ROUNDS);
+    // Normalize and hash password
+    const trimmedName = name.trim();
     const cleanEmail = email.trim().toLowerCase();
+    const passwordHash = await bcrypt.hash(password.trim(), SALT_ROUNDS);
 
     if (role === 'artisan') {
+      // Artisan registration
       const artisan = await prismaAuth.artisan.create({
         data: {
-          name: name.trim(),
+          name: trimmedName,
           email: cleanEmail,
-          password_hash: hash,
+          password_hash: passwordHash,
           bio: 'New artisan',
           image_url: '/images/artisans/default.jpg',
-          location: 'Unknown'
-        }
+          location: 'Unknown',
+        },
       });
-      return res.status(201).json({ 
-        id: artisan.artisan_id,
-        email: artisan.email,
-        role: 'artisan'
-      });
+
+      return res.status(201).json({ id: artisan.artisan_id, email: artisan.email, role: 'artisan' });
     } else {
-      // Customer registration logic here
+      // Customer registration
+      const customer = await prismaAuth.customer.create({
+        data: {
+          name: trimmedName,
+          email: cleanEmail,
+          password_hash: passwordHash,
+        },
+      });
+
+      return res.status(201).json({ id: customer.customer_id, email: customer.email, role: 'customer' });
     }
   } catch (error) {
-    debugAuth('Registration error', { error: error.message });
+    console.error('Registration error:', error);
+
     if (error.code === 'P2002') {
+      // Unique constraint failed (email already exists)
       return res.status(400).json({ message: 'Email already exists' });
     }
+
     return res.status(500).json({ message: 'Registration failed' });
   }
 };
 
 // Login function (complete implementation with enhanced debugging)
+// Create Admin User
+exports.createAdmin = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    // Normalize and hash password
+    const trimmedName = name.trim();
+    const cleanEmail = email.trim().toLowerCase();
+    const passwordHash = await bcrypt.hash(password.trim(), SALT_ROUNDS);
+
+    // Check if admin already exists
+    const existingAdmin = await prismaAuth.admin.findUnique({
+      where: { email: cleanEmail }
+    });
+
+    if (existingAdmin) {
+      return res.status(400).json({ message: 'Admin with this email already exists' });
+    }
+
+    // Create admin user
+    const admin = await prismaAuth.admin.create({
+      data: {
+        name: trimmedName,
+        email: cleanEmail,
+        password_hash: passwordHash
+      }
+    });
+
+    return res.status(201).json({ 
+      message: 'Admin created successfully',
+      admin: {
+        id: admin.admin_id,
+        name: admin.name,
+        email: admin.email
+      }
+    });
+  } catch (error) {
+    console.error('Admin creation error:', error);
+    return res.status(500).json({ message: 'Admin creation failed' });
+  }
+};
+
+// Modify the login function to also check for admin users
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -76,56 +137,59 @@ exports.login = async (req, res) => {
       emailsMatch: email === cleanEmail
     });
 
-    // Check if user exists in Artisan table
-    debugAuth('Searching for artisan user', { email: cleanEmail });
+    // First check if user is an admin
+    debugAuth('Searching for admin user', { email: cleanEmail });
     
-    // First, let's see all artisans in the database
-    const allArtisans = await prismaAuth.artisan.findMany({
-      select: { email: true, artisan_id: true, name: true }
-    });
-    debugAuth('All artisans in database', { artisans: allArtisans });
-    
-    let user = await prismaAuth.artisan.findUnique({
+    let user = await prismaAuth.admin.findUnique({
       where: { email: cleanEmail }
     });
     
-    let userRole = 'artisan';
+    let userRole = 'admin';
     
-    debugAuth('Artisan search result', { 
-      found: !!user,
-      userEmail: user ? user.email : null,
-      userId: user ? user.artisan_id : null,
-      searchedEmail: cleanEmail,
-      exactMatch: user ? (user.email === cleanEmail) : false
-    });
-    
-    // If not found in Artisan table, check Customer table
-    if (!user) {
-      debugAuth('Searching for customer user', { email: cleanEmail });
-      
-      const allCustomers = await prismaAuth.customer.findMany({
-        select: { email: true, customer_id: true, name: true }
+    if (user) {
+      debugAuth('Admin user found', { 
+        email: cleanEmail,
+        userId: user.admin_id
       });
-      debugAuth('All customers in database', { customers: allCustomers });
+    } else {
+      // Check if user exists in Artisan table
+      debugAuth('Searching for artisan user', { email: cleanEmail });
       
-      user = await prismaAuth.customer.findUnique({
+      user = await prismaAuth.artisan.findUnique({
         where: { email: cleanEmail }
       });
-      userRole = 'customer';
       
-      debugAuth('Customer search result', { 
+      userRole = 'artisan';
+      
+      debugAuth('Artisan search result', { 
         found: !!user,
         userEmail: user ? user.email : null,
-        userId: user ? user.customer_id : null
+        userId: user ? user.artisan_id : null,
+        searchedEmail: cleanEmail,
+        exactMatch: user ? (user.email === cleanEmail) : false
       });
+      
+      // If not found in Artisan table, check Customer table
+      if (!user) {
+        debugAuth('Searching for customer user', { email: cleanEmail });
+        
+        user = await prismaAuth.customer.findUnique({
+          where: { email: cleanEmail }
+        });
+        userRole = 'customer';
+        
+        debugAuth('Customer search result', { 
+          found: !!user,
+          userEmail: user ? user.email : null,
+          userId: user ? user.customer_id : null
+        });
+      }
     }
 
-    // If user not found in either table
+    // If user not found in any table
     if (!user) {
       debugAuth('User not found anywhere', { 
-        searchedEmail: cleanEmail,
-        totalArtisans: allArtisans.length,
-        totalCustomers: allArtisans.length 
+        searchedEmail: cleanEmail
       });
       return res.status(401).json({ message: 'Invalid email or password' });
     }
@@ -133,7 +197,8 @@ exports.login = async (req, res) => {
     debugAuth('User found successfully', { 
       email: cleanEmail, 
       role: userRole,
-      userId: userRole === 'artisan' ? user.artisan_id : user.customer_id,
+      userId: userRole === 'admin' ? user.admin_id : 
+              userRole === 'artisan' ? user.artisan_id : user.customer_id,
       userName: user.name
     });
 
@@ -162,9 +227,12 @@ exports.login = async (req, res) => {
     debugAuth('Password verified successfully', { email: cleanEmail });
 
     // Generate JWT token
+    const userId = userRole === 'admin' ? user.admin_id : 
+                  userRole === 'artisan' ? user.artisan_id : user.customer_id;
+                  
     const token = jwt.sign(
       { 
-        id: userRole === 'artisan' ? user.artisan_id : user.customer_id,
+        id: userId,
         email: user.email,
         role: userRole 
       },
@@ -175,24 +243,29 @@ exports.login = async (req, res) => {
     debugAuth('Login successful', { 
       email: cleanEmail, 
       role: userRole,
-      userId: userRole === 'artisan' ? user.artisan_id : user.customer_id 
+      userId: userId
     });
+
+    // Return success response with user data based on role
+    const userData = {
+      id: userId,
+      name: user.name,
+      email: user.email,
+      role: userRole
+    };
+    
+    // Add role-specific data
+    if (userRole === 'artisan') {
+      userData.bio = user.bio;
+      userData.image_url = user.image_url;
+      userData.location = user.location;
+    }
 
     // Return success response
     return res.status(200).json({
       message: 'Login successful',
       token,
-      user: {
-        id: userRole === 'artisan' ? user.artisan_id : user.customer_id,
-        name: user.name,
-        email: user.email,
-        role: userRole,
-        ...(userRole === 'artisan' && {
-          bio: user.bio,
-          image_url: user.image_url,
-          location: user.location
-        })
-      }
+      user: userData
     });
 
   } catch (error) {
