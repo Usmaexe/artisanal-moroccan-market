@@ -153,7 +153,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/40" />
         </div>
         
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-2xl text-white">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               Discover Authentic Moroccan Craftsmanship

@@ -51,7 +51,7 @@ function WishlistContent() {
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">My Wishlist ({items.length} items)</h2>
+          <h2 className="text-xl font-semibold text-amber-800">My Wishlist ({items.length} items)</h2>
           <button
             onClick={() => {
               clearWishlist();
@@ -126,7 +126,7 @@ export default function WishlistPage() {
   return (
     <ProtectedRoute>
       <div className="container mx-auto px-4 py-16 max-w-6xl">
-        <h1 className="text-3xl font-bold mb-8">My Wishlist</h1>
+        <h1 className="text-3xl font-bold mb-8 text-black">My Wishlist</h1>
         <WishlistContent />
       </div>
     </ProtectedRoute>

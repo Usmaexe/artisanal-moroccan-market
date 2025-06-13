@@ -129,7 +129,7 @@ const Header = () => {
                           setIsProfileOpen(false);
                           logout();
                         }}
-                        className="flex items-center w-full px-4 py-2 text-sm text-amber-800 hover:bg-amber-50 hover:text-amber-700"
+                        className="flex items-center w-full px-4 py-2 text-sm text-amber-800 hover:bg-amber-50 hover:text-amber-700 cursor-pointer"
                       >
                         <LogOut className="h-4 w-4 mr-2" />
                         Sign out
@@ -219,11 +219,12 @@ const Header = () => {
                   ))}
                   
                   <button
+                    type="submit"
                     onClick={() => {
                       setIsMenuOpen(false);
                       logout();
                     }}
-                    className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-amber-800 hover:bg-amber-50 hover:text-amber-700"
+                    className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-amber-800 hover:bg-amber-50 hover:text-amber-700 cursor-pointer"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
                     Sign out
