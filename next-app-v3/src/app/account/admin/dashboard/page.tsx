@@ -46,12 +46,6 @@ export default function AdminDashboard() {
       href: "/account/admin/orders",
       icon: <ShoppingBag className="h-6 w-6 text-amber-600" />,
       description: "Monitor and process customer orders"
-    },
-    {
-      title: "Settings",
-      href: "/account/admin/settings",
-      icon: <Settings className="h-6 w-6 text-amber-600" />,
-      description: "Configure platform settings"
     }
   ];
 
