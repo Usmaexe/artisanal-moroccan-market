@@ -2,7 +2,17 @@ const prismaOrder = require('../utils/prisma');
 
 exports.getAllOrders = async (req, res, next) => {
   try {
-    const orders = await prismaOrder.order.findMany({ include: { items: true } });
+    const { customerId } = req.query;
+    
+    // If customerId is provided, filter orders by customer_id
+    const where = customerId ? { customer_id: parseInt(customerId, 10) } : {};
+    
+    const orders = await prismaOrder.order.findMany({ 
+      where,
+      include: { items: true },
+      orderBy: { created_at: 'desc' } // Sort by newest first
+    });
+    
     res.json(orders);
   } catch (err) {
     next(err);
@@ -26,11 +36,19 @@ exports.getOrderById = async (req, res, next) => {
 exports.createOrder = async (req, res, next) => {
   try {
     const { customer_id, items, total } = req.body;
+    
+    // Transform items to match the OrderItem schema
+    const transformedItems = items.map(item => ({
+      product_id: item.product_id,
+      quantity: item.quantity,
+      price: item.price // Include the price field as it's now required in the schema
+    }));
+    
     const order = await prismaOrder.order.create({
       data: {
         customer_id,
         total,
-        items: { create: items }
+        items: { create: transformedItems }
       },
       include: { items: true }
     });

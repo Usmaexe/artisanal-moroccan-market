@@ -1,71 +1,62 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { useAuth } from '@/lib/auth/AuthContext';
 import Link from 'next/link';
-import { Search, Filter, ShoppingBag, Eye } from 'lucide-react';
+import { Search, ShoppingBag, Eye } from 'lucide-react';
+import { getCustomerOrders } from '@/lib/api/orders';
+import { format } from 'date-fns';
 
 export default function CustomerOrders() {
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('All');
+  const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock order data - in a real app, this would come from an API call
-  const orders = [
-    {
-      id: 'ORD-2023-1568',
-      date: '2023-04-15',
-      total: 189.99,
-      status: 'Pending',
-      items: 2,
-      payment: 'Credit Card'
-    },
-    {
-      id: 'ORD-2023-1567',
-      date: '2023-04-14',
-      total: 129.99,
-      status: 'Shipped',
-      items: 1,
-      payment: 'PayPal'
-    },
-    {
-      id: 'ORD-2023-1566',
-      date: '2023-04-10',
-      total: 249.99,
-      status: 'Delivered',
-      items: 3,
-      payment: 'Credit Card'
-    },
-    {
-      id: 'ORD-2023-1565',
-      date: '2023-04-05',
-      total: 89.99,
-      status: 'Delivered',
-      items: 1,
-      payment: 'PayPal'
-    },
-  ];
+  // Fetch orders from API
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!user?.id) return;
+      
+      try {
+        setLoading(true);
+        const data = await getCustomerOrders(user.id.toString());
+        setOrders(data || []);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching orders:', err);
+        setError('Failed to load orders. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [user]);
 
   const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filterStatus === 'All' || order.status === filterStatus;
-    return matchesSearch && matchesFilter;
+    if (!order || !order.order_id) return false;
+    const orderId = `ORD-${order.order_id}`;
+    return orderId.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'Shipped':
-        return 'bg-blue-100 text-blue-800';
-      case 'Delivered':
-        return 'bg-green-100 text-green-800';
-      case 'Cancelled':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+  // Format date from ISO string
+  const formatDate = (dateString: string) => {
+    if (!dateString) return 'N/A';
+    try {
+      return format(new Date(dateString), 'yyyy-MM-dd');
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'Invalid date';
     }
+  };
+
+  // Count items in an order
+  const countItems = (items: any[] | undefined) => {
+    if (!items || !Array.isArray(items)) return 0;
+    return items.length;
   };
 
   return (
@@ -97,23 +88,26 @@ export default function CustomerOrders() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
-                <div className="flex items-center">
-                  <Filter className="h-5 w-5 text-gray-400 mr-2" />
-                  <select
-                    className="border border-gray-300 rounded-md focus:ring-amber-500 focus:border-amber-500 py-2 px-4"
-                    value={filterStatus}
-                    onChange={(e) => setFilterStatus(e.target.value)}
-                  >
-                    <option value="All">All Statuses</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Delivered">Delivered</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
               </div>
+              
+              {loading ? (
+                <div className="text-center py-8">
+                  <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-amber-500 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+                  <p className="mt-2 text-gray-600">Loading your orders...</p>
+                </div>
+              ) : error ? (
+                <div className="bg-red-50 rounded-md p-4 text-center">
+                  <p className="text-red-600">{error}</p>
+                  <button 
+                    onClick={() => window.location.reload()} 
+                    className="mt-2 text-red-700 underline"
+                  >
+                    Try again
+                  </button>
+                </div>
+              ) : null}
 
-              {filteredOrders.length > 0 ? (
+              {!loading && !error && filteredOrders.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
@@ -128,13 +122,7 @@ export default function CustomerOrders() {
                           Total
                         </th>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Status
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Items
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Payment
                         </th>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Actions
@@ -143,30 +131,22 @@ export default function CustomerOrders() {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {filteredOrders.map((order) => (
-                        <tr key={order.id}>
+                        <tr key={order.order_id}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {order.id}
+                            ORD-{order.order_id}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {order.date}
+                            {formatDate(order.created_at)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            ${order.total.toFixed(2)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.status)}`}>
-                              {order.status}
-                            </span>
+                            {parseFloat(order.total || 0).toFixed(2)} DH
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {order.items}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {order.payment}
+                            {countItems(order.items)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <Link 
-                              href={`/account/orders/${order.id}`} 
+                              href={`/account/orders/ORD-${order.order_id}`} 
                               className="text-amber-600 hover:text-amber-900 flex items-center"
                             >
                               <Eye className="h-4 w-4 mr-1" />
@@ -178,7 +158,7 @@ export default function CustomerOrders() {
                     </tbody>
                   </table>
                 </div>
-              ) : (
+              ) : !loading && !error ? (
                 <div className="bg-amber-50 rounded-md p-8 text-center">
                   <ShoppingBag className="h-12 w-12 text-amber-600 mx-auto mb-4" />
                   <p className="text-gray-600 mb-4">You haven't placed any orders yet.</p>
@@ -189,7 +169,7 @@ export default function CustomerOrders() {
                     Start Shopping
                   </Link>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

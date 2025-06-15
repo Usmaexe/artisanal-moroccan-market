@@ -70,6 +70,7 @@ model Order {
   order_id    Int         @id @default(autoincrement())
   status      String      @default("pending")
   total       Decimal
+  created_at  DateTime    @default(now())
   customer_id Int
   customer    Customer    @relation(fields: [customer_id], references: [customer_id])
   items       OrderItem[]
@@ -78,6 +79,7 @@ model Order {
 model OrderItem {
   order_item_id Int     @id @default(autoincrement())
   quantity      Int
+  price         Decimal
   order_id      Int
   product_id    Int
   order         Order   @relation(fields: [order_id], references: [order_id])

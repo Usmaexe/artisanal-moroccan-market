@@ -1,25 +1,67 @@
 'use client';
 
 import { useCart } from '@/lib/cart/CartContext';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { createOrder } from '@/lib/api/orders';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, clearCart, getCartTotal } = useCart();
+  const { user } = useAuth();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const router = useRouter();
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+    if (!user) {
+      toast.error('Please log in to checkout');
+      router.push('/login');
+      return;
+    }
+
     setIsCheckingOut(true);
     
-    // Simulate checkout process
-    setTimeout(() => {
-      toast.success('Order placed successfully!');
-      clearCart();
+    try {
+      // Prepare order items in the format expected by the backend
+      const orderItems = items.map(item => ({
+        product_id: parseInt(item.product.id),
+        quantity: item.quantity,
+        price: item.product.price
+      }));
+
+      // Calculate total (including tax and shipping)
+      const subtotal = getCartTotal();
+      const shipping = 10;
+      const tax = subtotal * 0.05;
+      const total = subtotal + shipping + tax;
+
+      // Create the order
+      const orderData = {
+        customer_id: user.id,
+        items: orderItems,
+        total: parseFloat(total.toFixed(2))
+      };
+
+      const result = await createOrder(orderData);
+      
+      if (result) {
+        toast.success('Order placed successfully!');
+        clearCart();
+        // Redirect to order confirmation or orders page
+        router.push(`/account/orders`);
+      } else {
+        throw new Error('Failed to create order');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast.error('Failed to place order. Please try again.');
+    } finally {
       setIsCheckingOut(false);
-    }, 2000);
+    }
   };
 
   if (items.length === 0) {
