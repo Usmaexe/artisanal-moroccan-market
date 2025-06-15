@@ -1,56 +1,163 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { useAuth } from '@/lib/auth/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
-import { User, Mail, Phone, MapPin, Save, Camera } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Save, Camera, Upload } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, token, updateUser } = useAuth();
+
+  console.log(user);
   
   // Initialize form state with user data
-  const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-    address: {
-      street: user?.address?.street || '',
-      city: user?.address?.city || '',
-      state: user?.address?.state || '',
-      postalCode: user?.address?.postalCode || '',
-      country: user?.address?.country || 'Morocco',
-    },
+  interface FormData {
+    name: string;
+    email: string;
+    phone: string;
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+    image_url?: string;
+  }
+
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    phone: '',
+    street: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: 'Morocco',
+    image_url: user?.image_url
   });
 
-  const [isEditing, setIsEditing] = useState(false);
+  // Update form data when user changes
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        street: user.street || '',
+        city: user.city || '',
+        state: user.state || '',
+        postalCode: user.postalCode || '',
+        country: user.country || 'Morocco',
+        image_url: user.image_url
+      });
+    }
+  }, [user]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [isEditing, setIsEditing] = useState(true); // Set to true by default for testing
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type and size
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      toast.error('Only JPG, PNG or WEBP images allowed');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Image must be smaller than 2MB');
+      return;
+    }
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('path', `images/customer/${Date.now()}_${file.name}`);
+
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Upload failed');
+      
+      const { path } = await response.json();
+      
+      // Update profile with new image
+      const updateResponse = await fetch(`/api/customer?id=${user?.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ image_url: path }),
+      });
+
+      if (!updateResponse.ok) throw new Error('Profile update failed');
+      
+      const updatedData = await updateResponse.json();
+      
+      // Update local state
+      setFormData(prev => ({ ...prev, image_url: path }));
+      
+      // Update auth context
+      updateUser({ image_url: path });
+      
+      toast.success('Profile image updated!');
+    } catch (error) {
+      toast.error('Failed to upload image');
+      console.error(error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      address: {
-        ...formData.address,
-        [name]: value,
-      },
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would call an API to update the user profile
-    toast.success('Profile updated successfully!');
-    setIsEditing(false);
+    try {
+      const response = await fetch(`/api/customer?id=${user?.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...formData,
+          // Don't send email as it shouldn't be changed
+          email: undefined
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      const updatedUser = await response.json();
+      
+      // Update auth context with new user data
+      updateUser(formData);
+      
+      toast.success('Profile updated successfully!');
+      setIsEditing(false);
+    } catch (error) {
+      toast.error('Failed to update profile');
+      console.error('Profile update error:', error);
+    }
   };
 
   return (
@@ -67,15 +174,25 @@ export default function ProfilePage() {
                 Back to Dashboard
               </Link>
             </div>
+            {formData.image_url && (
+              <Image
+                src={`/${formData.image_url}`}
+                alt="Profile"
+                width={80}
+                height={80}
+                className="rounded-full mx-auto mt-4"
+                priority
+              />
+            )}
 
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="p-6 bg-amber-600 text-white flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="relative h-20 w-20 rounded-full overflow-hidden border-2 border-white mr-4">
-                    {user?.image ? (
+                    {user?.image_url ? (
                       <Image
-                        src={user.image}
-                        alt={user.name}
+                        src={`/${formData.image_url}`}
+                        alt={user?.name || 'Profile'}
                         fill
                         style={{ objectFit: "cover" }}
                       />
@@ -90,12 +207,28 @@ export default function ProfilePage() {
                     <p className="text-amber-100">{user?.email}</p>
                   </div>
                 </div>
-                <button 
-                  className="bg-white text-amber-600 p-2 rounded-full hover:bg-amber-50 transition-colors"
-                  title="Change profile picture"
-                >
-                  <Camera className="h-5 w-5" />
-                </button>
+                <div className="relative">
+                  <button
+                    type="button"
+                    className="bg-white text-amber-600 p-2 rounded-full hover:bg-amber-50 transition-colors"
+                    title="Change profile picture"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploading}
+                  >
+                    {isUploading ? (
+                      <Upload className="h-5 w-5 animate-pulse" />
+                    ) : (
+                      <Camera className="h-5 w-5" />
+                    )}
+                  </button>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="p-6">
@@ -107,7 +240,7 @@ export default function ProfilePage() {
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                           Full Name
                         </label>
-                        <div className="relative">
+                        <div className="relative text-gray-900">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <User className="h-5 w-5 text-gray-400" />
                           </div>
@@ -126,7 +259,7 @@ export default function ProfilePage() {
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                           Email Address
                         </label>
-                        <div className="relative">
+                        <div className="relative text-gray-900">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Mail className="h-5 w-5 text-gray-400" />
                           </div>
@@ -145,7 +278,7 @@ export default function ProfilePage() {
                         <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
                           Phone Number
                         </label>
-                        <div className="relative">
+                        <div className="relative text-gray-900">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Phone className="h-5 w-5 text-gray-400" />
                           </div>
@@ -170,7 +303,7 @@ export default function ProfilePage() {
                         <label htmlFor="street" className="block text-sm font-medium text-gray-700 mb-1">
                           Street Address
                         </label>
-                        <div className="relative">
+                        <div className="relative text-gray-900">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <MapPin className="h-5 w-5 text-gray-400" />
                           </div>
@@ -178,8 +311,8 @@ export default function ProfilePage() {
                             type="text"
                             id="street"
                             name="street"
-                            value={formData.address.street}
-                            onChange={handleAddressChange}
+                            value={formData.street}
+                            onChange={handleInputChange}
                             disabled={!isEditing}
                             className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 disabled:bg-gray-100 disabled:text-gray-500"
                           />
@@ -193,10 +326,10 @@ export default function ProfilePage() {
                           type="text"
                           id="city"
                           name="city"
-                          value={formData.address.city}
-                          onChange={handleAddressChange}
+                          value={formData.city}
+                          onChange={handleInputChange}
                           disabled={!isEditing}
-                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 disabled:bg-gray-100 disabled:text-gray-500"
+                          className="block  text-gray-900 w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 disabled:bg-gray-100 disabled:text-gray-500"
                         />
                       </div>
                       <div>
@@ -207,10 +340,10 @@ export default function ProfilePage() {
                           type="text"
                           id="state"
                           name="state"
-                          value={formData.address.state}
-                          onChange={handleAddressChange}
+                          value={formData.state}
+                          onChange={handleInputChange}
                           disabled={!isEditing}
-                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 disabled:bg-gray-100 disabled:text-gray-500"
+                          className="block  text-gray-900 w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 disabled:bg-gray-100 disabled:text-gray-500"
                         />
                       </div>
                       <div>
@@ -221,10 +354,10 @@ export default function ProfilePage() {
                           type="text"
                           id="postalCode"
                           name="postalCode"
-                          value={formData.address.postalCode}
-                          onChange={handleAddressChange}
+                          value={formData.postalCode}
+                          onChange={handleInputChange}
                           disabled={!isEditing}
-                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 disabled:bg-gray-100 disabled:text-gray-500"
+                          className="block text-gray-900 w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 disabled:bg-gray-100 disabled:text-gray-500"
                         />
                       </div>
                       <div>
@@ -234,10 +367,10 @@ export default function ProfilePage() {
                         <select
                           id="country"
                           name="country"
-                          value={formData.address.country}
-                          onChange={handleAddressChange}
+                          value={formData.country}
+                          onChange={handleInputChange}
                           disabled={!isEditing}
-                          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 disabled:bg-gray-100 disabled:text-gray-500"
+                          className="block text-gray-900 w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 disabled:bg-gray-100 disabled:text-gray-500"
                         >
                           <option value="Morocco">Morocco</option>
                           <option value="Algeria">Algeria</option>

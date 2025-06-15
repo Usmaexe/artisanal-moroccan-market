@@ -23,21 +23,21 @@ const mockUsers: User[] = [
     name: "Customer Demo",
     email: "customer@example.com",
     role: "customer",
-    image: "https://images.unsplash.com/photo-1534751516642-a1af1ef26a56"
+    image_url: "https://images.unsplash.com/photo-1534751516642-a1af1ef26a56"
   },
   {
     id: "2",
     name: "Artisan Demo",
     email: "artisan@example.com",
     role: "artisan",
-    image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857"
+    image_url: "https://images.unsplash.com/photo-1566492031773-4f4e44671857"
   },
   {
     id: "3",
     name: "Admin Demo",
     email: "admin@example.com",
     role: "admin",
-    image: "https://images.unsplash.com/photo-1608137050689-b08b643ea4f4"
+    image_url: "https://images.unsplash.com/photo-1608137050689-b08b643ea4f4"
   }
 ];
 
@@ -240,6 +240,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     router.push("/");
   };
 
+  const updateUser = (updatedUserData: Partial<User>) => {
+    if (!state.user) return;
+    
+    const updatedUser = { ...state.user, ...updatedUserData };
+    
+    // Update local storage
+    setToLocalStorage('morocco_craft_user', JSON.stringify(updatedUser));
+    
+    // Update state
+    setState(prev => ({
+      ...prev,
+      user: updatedUser
+    }));
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -247,7 +262,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         signup,
         logout,
-        checkSession
+        checkSession,
+        updateUser
       }}
     >
       {children}

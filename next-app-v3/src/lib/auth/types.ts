@@ -5,15 +5,13 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  image?: string;
+  image_url?: string;
   phone?: string;
-  address?: {
-    street?: string;
-    city?: string;
-    state?: string;
-    postalCode?: string;
-    country?: string;
-  };
+  street?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
 }
 
 export interface AuthState {
@@ -40,4 +38,5 @@ export interface AuthContextType extends AuthState {
   signup: (credentials: SignupCredentials) => Promise<void>;
   logout: () => void;
   checkSession: () => Promise<void>;
+  updateUser: (updatedUserData: Partial<User>) => void;
 }

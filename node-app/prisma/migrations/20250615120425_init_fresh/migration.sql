@@ -41,8 +41,26 @@ CREATE TABLE "Customer" (
     "email" TEXT NOT NULL,
     "password_hash" TEXT NOT NULL,
     "name" TEXT,
+    "phone" TEXT,
+    "street" TEXT,
+    "city" TEXT,
+    "state" TEXT,
+    "postalCode" TEXT,
+    "country" TEXT,
+    "image_url" TEXT,
 
     CONSTRAINT "Customer_pkey" PRIMARY KEY ("customer_id")
+);
+
+-- CreateTable
+CREATE TABLE "Admin" (
+    "admin_id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "password_hash" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Admin_pkey" PRIMARY KEY ("admin_id")
 );
 
 -- CreateTable
@@ -70,6 +88,7 @@ CREATE TABLE "Review" (
     "review_id" SERIAL NOT NULL,
     "rating" INTEGER NOT NULL,
     "comment" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "product_id" INTEGER NOT NULL,
     "customer_id" INTEGER NOT NULL,
 
@@ -81,6 +100,9 @@ CREATE UNIQUE INDEX "Artisan_email_key" ON "Artisan"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Customer_email_key" ON "Customer"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 
 -- AddForeignKey
 ALTER TABLE "Product" ADD CONSTRAINT "Product_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "Category"("category_id") ON DELETE RESTRICT ON UPDATE CASCADE;

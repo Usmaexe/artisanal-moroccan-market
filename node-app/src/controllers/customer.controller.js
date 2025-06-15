@@ -2,9 +2,20 @@ const prisma = require('../utils/prisma');
 
 exports.createCustomer = async (req, res, next) => {
   try {
-    const { email, password_hash } = req.body;
+    const { email, password_hash, name, phone, street, city, state, postalCode, country, image_url } = req.body;
     const customer = await prisma.customer.create({
-      data: { email, password_hash }
+      data: {
+        email,
+        password_hash,
+        name,
+        phone,
+        street,
+        city,
+        state,
+        postalCode,
+        country,
+        image_url
+      }
     });
     res.status(201).json(customer);
   } catch (err) {
@@ -35,9 +46,19 @@ exports.getCustomerById = async (req, res, next) => {
 exports.updateCustomer = async (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   try {
+    const { name, phone, street, city, state, postalCode, country, image_url } = req.body;
     const updated = await prisma.customer.update({
       where: { customer_id: id },
-      data: req.body
+      data: {
+        name,
+        phone,
+        street,
+        city,
+        state,
+        postalCode,
+        country,
+        image_url
+      }
     });
     res.json(updated);
   } catch (err) {

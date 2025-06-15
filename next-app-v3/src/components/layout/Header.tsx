@@ -17,6 +17,22 @@ const Header = () => {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
+  // Function to check if a string is a valid URL or a local image path
+  const isValidImagePath = (path: string): boolean => {
+    // Check if it's a local path starting with '/images/' or 'images/'
+    if (path.startsWith('/images/') || path.startsWith('images/')) {
+      return true;
+    }
+    
+    // Check if it's a valid URL
+    try {
+      new URL(path);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
   const navigation = [
     { name: "Home", href: "/" },
     { name: "Products", href: "/products" },
@@ -94,9 +110,9 @@ const Header = () => {
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                 >
                   <div className="relative w-8 h-8 rounded-full overflow-hidden border border-gray-300">
-                    {user.image ? (
+                    {user.image_url && isValidImagePath(user.image_url) ? (
                       <Image
-                        src={user.image}
+                        src={user.image_url.startsWith('http') ? user.image_url : `/${user.image_url}`}
                         alt={user.name}
                         fill
                         style={{ objectFit: "cover" }}
@@ -190,10 +206,10 @@ const Header = () => {
               <>
                 <div className="border-t border-gray-200 pt-4 mt-4">
                   <div className="flex items-center px-3 mb-3">
-                    <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gray-300 mr-3">
-                      {user.image ? (
+                    <div className="relative w-8 h-8 rounded-full overflow-hidden border border-gray-300 mr-3">
+                      {user.image_url && isValidImagePath(user.image_url) ? (
                         <Image
-                          src={user.image}
+                          src={user.image_url.startsWith('http') ? user.image_url : `/${user.image_url}`}
                           alt={user.name}
                           fill
                           style={{ objectFit: "cover" }}
@@ -201,7 +217,8 @@ const Header = () => {
                       ) : (
                         <User className="h-full w-full p-1" />
                       )}
-                    </div>                    <div>
+                    </div>
+                    <div>
                       <p className="font-medium text-amber-800">{user.name}</p>
                       <p className="text-xs text-amber-600 capitalize">{user.role}</p>
                     </div>
