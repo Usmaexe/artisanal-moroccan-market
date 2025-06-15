@@ -112,7 +112,9 @@ const Header = () => {
                   <div className="relative w-8 h-8 rounded-full overflow-hidden border border-gray-300">
                     {user.image_url && isValidImagePath(user.image_url) ? (
                       <Image
-                        src={user.image_url.startsWith('http') ? user.image_url : `/${user.image_url}`}
+                        src={user.image_url.startsWith('http') ? user.image_url : (
+                          user.image_url.startsWith('/') ? `${user.image_url}` : `/${user.image_url}`
+                        )}
                         alt={user.name}
                         fill
                         style={{ objectFit: "cover" }}

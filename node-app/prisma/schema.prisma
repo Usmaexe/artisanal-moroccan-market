@@ -39,6 +39,12 @@ model Artisan {
   bio           String
   image_url     String
   location      String
+  phone         String?
+  street        String?
+  city          String?
+  state         String?
+  postalCode    String?
+  country       String?
   products      Product[]
 }
 

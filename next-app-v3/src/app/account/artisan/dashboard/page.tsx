@@ -6,7 +6,7 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
-import { Package, ShoppingBag, BarChart, PlusCircle, Settings } from "lucide-react";
+import { Package, ShoppingBag, BarChart, PlusCircle, Settings, User } from 'lucide-react';
 
 interface Artisan {
   artisan_id: number;
@@ -64,6 +64,12 @@ export default function ArtisanDashboard() {
       href: "/account/artisan/products/new",
       icon: <PlusCircle className="h-6 w-6 text-amber-600" />,
       description: "Create a new product listing"
+    },
+    {
+      title: "Edit Profile",
+      href: "/account/artisan/profile",
+      icon: <User className="h-6 w-6 text-amber-600" />,
+      description: "Update your profile information"
     }
   ];
 
@@ -113,7 +119,11 @@ export default function ArtisanDashboard() {
                     <div className="mb-4 sm:mb-0 sm:mr-6">
                       <div className="relative h-20 w-20 rounded-full overflow-hidden border-2 border-amber-500">
                         <Image
-                          src={artisan.image_url}
+                          src={artisan.image_url.startsWith('http') ? 
+                            artisan.image_url : 
+                            artisan.image_url.startsWith('/') ?
+                              artisan.image_url :
+                              `/images/artisans/${artisan.image_url.split('/').pop() || artisan.image_url}`}
                           alt={artisan.name}
                           fill
                           style={{ objectFit: "cover" }}
@@ -124,6 +134,12 @@ export default function ArtisanDashboard() {
                       <p><span className="font-medium">Name:</span> {artisan.name}</p>
                       <p><span className="font-medium">Bio:</span> {artisan.bio}</p>
                       <p><span className="font-medium">Location:</span> {artisan.location}</p>
+                      <Link 
+                        href="/account/artisan/profile"
+                        className="mt-2 inline-block text-sm font-medium text-amber-600 hover:text-amber-700"
+                      >
+                        Edit Profile
+                      </Link>
                     </div>
                   </div>
                 </div>
