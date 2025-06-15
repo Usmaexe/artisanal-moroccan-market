@@ -27,41 +27,76 @@ export default function ArtisanProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+
+  const fetchArtisanProducts = async () => {
+    if (!user?.id) return;
+    
+    try {
+      setLoading(true);
+      // Fetch all products
+      const response = await axios.get("http://localhost:5000/api/products");
+      
+      // Filter products by artisan_id matching the logged-in user's ID
+      const artisanProducts = response.data
+        .filter((product: any) => product.artisan_id === parseInt(user.id))
+        .map((product: any) => ({
+          id: product.product_id.toString(),
+          name: product.name,
+          description: product.description || "",
+          price: parseFloat(product.price),
+          images: [product.image_url],
+          category: {
+            name: product.category?.name || "Uncategorized"
+          },
+          isOnSale: false,
+          inStock: true // Assuming all products are in stock by default
+        }));
+      
+      setProducts(artisanProducts);
+    } catch (err) {
+      console.error("Error fetching products:", err);
+      setError("Failed to load products");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteProduct = async (productId: string) => {
+    // Confirm before deleting
+    if (!window.confirm("Are you sure you want to delete this product? This action cannot be undone.")) {
+      return;
+    }
+    
+    try {
+      setDeleteLoading(productId);
+      
+      // Get token from localStorage
+      const token = localStorage.getItem('morocco_craft_token');
+      
+      if (!token) {
+        throw new Error('Authentication token not found. Please log in again.');
+      }
+      
+      // Make API call to delete product
+      await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      // Update the products list by removing the deleted product
+      setProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
+      
+    } catch (err) {
+      console.error("Error deleting product:", err);
+      alert("Failed to delete product. Please try again.");
+    } finally {
+      setDeleteLoading(null);
+    }
+  };
 
   useEffect(() => {
-    const fetchArtisanProducts = async () => {
-      if (!user?.id) return;
-      
-      try {
-        setLoading(true);
-        // Fetch all products
-        const response = await axios.get("http://localhost:5000/api/products");
-        
-        // Filter products by artisan_id matching the logged-in user's ID
-        const artisanProducts = response.data
-          .filter((product: any) => product.artisan_id === parseInt(user.id))
-          .map((product: any) => ({
-            id: product.product_id.toString(),
-            name: product.name,
-            description: product.description || "",
-            price: parseFloat(product.price),
-            images: [product.image_url],
-            category: {
-              name: product.category?.name || "Uncategorized"
-            },
-            isOnSale: false,
-            inStock: true // Assuming all products are in stock by default
-          }));
-        
-        setProducts(artisanProducts);
-      } catch (err) {
-        console.error("Error fetching products:", err);
-        setError("Failed to load products");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchArtisanProducts();
   }, [user?.id]);
 
@@ -165,8 +200,16 @@ export default function ArtisanProductsPage() {
                               >
                                 <Edit className="h-5 w-5" />
                               </Link>
-                              <button className="text-red-600 hover:text-red-900">
-                                <Trash2 className="h-5 w-5" />
+                              <button 
+                                onClick={() => deleteProduct(product.id)}
+                                disabled={deleteLoading === product.id}
+                                className={`text-red-600 hover:text-red-900 ${deleteLoading === product.id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                              >
+                                {deleteLoading === product.id ? (
+                                  <div className="h-5 w-5 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                                ) : (
+                                  <Trash2 className="h-5 w-5" />
+                                )}
                               </button>
                             </div>
                           </td>

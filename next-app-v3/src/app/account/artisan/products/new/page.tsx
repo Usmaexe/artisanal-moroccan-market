@@ -238,10 +238,10 @@ export default function NewProductPage() {
                   </div>
                   
                   <div>
-                    <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price (USD) *</label>
+                    <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price (DH) *</label>
                     <div className="mt-1 relative rounded-md shadow-sm">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span className="text-gray-500 sm:text-sm">$</span>
+                        <span className="text-gray-500 sm:text-sm">DH</span>
                       </div>
                       <input
                         type="number"
@@ -252,7 +252,7 @@ export default function NewProductPage() {
                         value={formData.price}
                         onChange={handleChange}
                         required
-                        className="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 text-amber-600"
+                        className="pl-12 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                       />
                     </div>
                   </div>
@@ -288,7 +288,7 @@ export default function NewProductPage() {
                       rows={3}
                       value={formData.features}
                       onChange={handleChange}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block text-amber-600 w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                       placeholder="Handmade\nFair trade\nEco-friendly"
                     />
                   </div>
@@ -301,7 +301,7 @@ export default function NewProductPage() {
                       name="dimensions"
                       value={formData.dimensions}
                       onChange={handleChange}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block w-full text-amber-600 rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                       placeholder="e.g. 10cm x 15cm x 5cm"
                     />
                   </div>
@@ -315,7 +315,7 @@ export default function NewProductPage() {
                       name="materials"
                       value={formData.materials}
                       onChange={handleChange}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
+                      className="mt-1 block w-full text-amber-600 rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500"
                       placeholder="Clay, Ceramic, Glaze"
                     />
                   </div>

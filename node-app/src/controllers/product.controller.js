@@ -26,13 +26,18 @@ exports.getProductById = async (req, res, next) => {
 exports.createProduct = async (req, res, next) => {
   try {
     // Extract data from request body
-    const { features, materials, categoryId, ...productData } = req.body;
+    const { features, materials, categoryId, artisan_id, category_id, ...productData } = req.body;
     
-    // Create product with proper category_id field
+    // Create product with proper relations for both category and artisan
     const product = await prismaProd.product.create({ 
       data: {
         ...productData,
-        category_id: parseInt(categoryId, 10)
+        category: {
+          connect: { category_id: parseInt(categoryId, 10) || 1 } // Default to 1 if NaN
+        },
+        artisan: {
+          connect: { artisan_id: parseInt(artisan_id, 10) }
+        }
       },
       include: { category: true, artisan: true }
     });
