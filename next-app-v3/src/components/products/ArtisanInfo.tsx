@@ -25,7 +25,7 @@ export default function ArtisanInfo({ artisan }: ArtisanInfoProps) {
         <div className="flex flex-col md:flex-row items-start gap-6">
           <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 ring-4 ring-amber-100">
             <Image
-              src={"/images/artisans/profile.jpg"}
+              src={artisan.image || "/images/artisans/profile.jpg"}
               alt={artisan.name}
               fill
               style={{ objectFit: "cover" }}
@@ -63,14 +63,14 @@ export default function ArtisanInfo({ artisan }: ArtisanInfoProps) {
             
             <div className="flex gap-3">
               <Link
-                href={`/about`}
-                className="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-200 font-medium"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                View Artisan Profile
-              </Link>
+              href={`/artisans/${artisan.slug}`}
+              className="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-200 font-medium"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              View Artisan Profile
+            </Link>
               <Link
                 href={`/products?artisan=${artisan.slug}`}
                 className="inline-flex items-center px-4 py-2 bg-white text-amber-600 border border-amber-600 rounded-lg hover:bg-amber-50 transition-colors duration-200 font-medium"
