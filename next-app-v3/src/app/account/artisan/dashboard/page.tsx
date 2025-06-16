@@ -60,6 +60,12 @@ export default function ArtisanDashboard() {
       description: "Manage your product listings"
     },
     {
+      title: "Orders",
+      href: "/account/artisan/orders",
+      icon: <ShoppingBag className="h-6 w-6 text-amber-600" />,
+      description: "View and manage your orders"
+    },
+    {
       title: "Add New Product",
       href: "/account/artisan/products/new",
       icon: <PlusCircle className="h-6 w-6 text-amber-600" />,
