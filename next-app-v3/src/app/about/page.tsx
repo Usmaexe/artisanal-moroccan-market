@@ -170,68 +170,42 @@ export default function AboutPage() {
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
             <p className="text-gray-700 max-w-3xl mx-auto text-lg">
-              Our passionate team brings together expertise in cultural heritage, design, and sustainable business practices.
+              Our team consists of talented students from the National Institute of Posts and Telecommunications (INPT) with expertise in advanced software engineering.
             </p>
             <div className="w-24 h-1 bg-amber-600 mx-auto mt-6"></div>
           </div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1534751516642-a1af1ef26a56"
-                  alt="Founder"
-                  fill
-                  style={{ objectFit: "cover" }}
-                  className="group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="flex justify-center items-center h-64 bg-amber-50">
+                <div className="w-32 h-32 bg-amber-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </div>
               </div>
               <div className="p-6 border-t-4 border-amber-600">
-                <h3 className="text-xl font-semibold text-gray-900 mb-1">Sarah Mohamedi</h3>
-                <p className="text-amber-600 font-medium mb-3">Founder & CEO</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-1">Chahid Hadifi</h3>
+                <p className="text-amber-600 font-medium mb-3">Advanced Software Engineering Student</p>
                 <p className="text-gray-600">
-                  With Moroccan heritage and a passion for preserving traditional crafts, Sarah founded Moroccan Artisans after working in international development for 10 years.
+                  A talented software engineering student at INPT with a passion for creating innovative solutions and preserving cultural heritage through technology.
                 </p>
               </div>
             </div>
             
             <div className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
-                  alt="Artisan Director"
-                  fill
-                  style={{ objectFit: "cover" }}
-                  className="group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="flex justify-center items-center h-64 bg-amber-50">
+                <div className="w-32 h-32 bg-amber-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
               </div>
               <div className="p-6 border-t-4 border-amber-600">
-                <h3 className="text-xl font-semibold text-gray-900 mb-1">Karim Alaoui</h3>
-                <p className="text-amber-600 font-medium mb-3">Artisan Relations Director</p>
+                <h3 className="text-xl font-semibold text-gray-900 mb-1">Oussama Anou</h3>
+                <p className="text-amber-600 font-medium mb-3">Advanced Software Engineering Student</p>
                 <p className="text-gray-600">
-                  Born into a family of artisans in Fez, Karim brings deep knowledge of Moroccan crafts and helps us connect with the most skilled artisans across the country.
-                </p>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300 sm:col-span-2 lg:col-span-1">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1544717305-996b815c338c"
-                  alt="Curator"
-                  fill
-                  style={{ objectFit: "cover" }}
-                  className="group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              <div className="p-6 border-t-4 border-amber-600">
-                <h3 className="text-xl font-semibold text-gray-900 mb-1">Leila Benali</h3>
-                <p className="text-amber-600 font-medium mb-3">Product Curator</p>
-                <p className="text-gray-600">
-                  With a background in design and art history, Leila curates our collection with an eye for both authenticity and contemporary appeal.
+                  A dedicated student at INPT specializing in advanced software engineering, combining technical expertise with a commitment to showcasing Moroccan craftsmanship globally.
                 </p>
               </div>
             </div>
@@ -251,7 +225,7 @@ export default function AboutPage() {
           
           <div className="bg-gradient-to-r from-amber-700 to-amber-800 relative z-10">
             <div className="grid md:grid-cols-2">
-              <div className="relative h-80 md:h-auto overflow-hidden">
+              {/* <div className="relative h-80 md:h-auto overflow-hidden">
                 <Image
                   src="https://images.unsplash.com/photo-1590944259990-751c9ab7bdbc"
                   alt="Moroccan crafts"
@@ -260,7 +234,7 @@ export default function AboutPage() {
                   className="hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-800/50 via-transparent to-transparent"></div>
-              </div>
+              </div> */}
               
               <div className="p-10 md:p-12 flex flex-col justify-center">
                 <h2 className="text-3xl font-bold text-white mb-6">Join Our Journey</h2>
@@ -288,4 +262,4 @@ export default function AboutPage() {
       </div>
     </div>
   );
-} 
+}

@@ -187,7 +187,7 @@ export default function AdminOrders() {
                             {new Date(order.date).toLocaleDateString()}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            ${order.total.toFixed(2)}
+                            {order.total.toFixed(2)} DH
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.status)}`}>
@@ -206,36 +206,6 @@ export default function AdminOrders() {
                               >
                                 <Eye className="h-5 w-5" />
                               </Link>
-
-                              {order.status === "Pending" && (
-                                <button 
-                                  onClick={() => handleUpdateStatus(order.id, "Shipped")}
-                                  className="text-blue-600 hover:text-blue-800"
-                                  title="Mark as Shipped"
-                                >
-                                  <TruckIcon className="h-5 w-5" />
-                                </button>
-                              )}
-                              
-                              {(order.status === "Pending" || order.status === "Shipped") && (
-                                <>
-                                  <button 
-                                    onClick={() => handleUpdateStatus(order.id, "Delivered")}
-                                    className="text-green-600 hover:text-green-800"
-                                    title="Mark as Delivered"
-                                  >
-                                    <Check className="h-5 w-5" />
-                                  </button>
-                                  
-                                  <button 
-                                    onClick={() => handleUpdateStatus(order.id, "Cancelled")}
-                                    className="text-red-600 hover:text-red-800"
-                                    title="Cancel Order"
-                                  >
-                                    <X className="h-5 w-5" />
-                                  </button>
-                                </>
-                              )}
                             </div>
                           </td>
                         </tr>
