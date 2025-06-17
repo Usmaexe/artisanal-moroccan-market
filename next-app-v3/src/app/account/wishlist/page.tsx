@@ -32,9 +32,9 @@ function WishlistContent() {
     return (
       <div className="bg-white rounded-lg shadow-md p-8 text-center">
         <div className="flex justify-center mb-4">
-          <Heart className="h-16 w-16 text-gray-300" />
+          <Heart className="h-16 w-16 text-amber-600" />
         </div>
-        <h2 className="text-2xl font-semibold mb-4">Your wishlist is empty</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-amber-600">Your wishlist is empty</h2>
         <p className="text-gray-600 mb-6">Looks like you haven't added any products to your wishlist yet.</p>
         <Link 
           href="/products" 

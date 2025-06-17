@@ -24,7 +24,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
     
     // Simulate a small delay to show loading state
     setTimeout(() => {
-      addToCart(product, quantity);
+      addToCart(product, quantity); 
       toast.success(`${product.name} added to cart`);
       setIsAddingToCart(false);
     }, 500);

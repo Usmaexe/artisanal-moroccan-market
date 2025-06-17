@@ -13,7 +13,6 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { getFromLocalStorage, setToLocalStorage, removeFromLocalStorage } from "./storage";
 
-// API base URL - adjust this to match your backend
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 // Mock users for demo buttons only
@@ -68,7 +67,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const savedToken = getFromLocalStorage('morocco_craft_token');
       
       if (savedUser && savedToken) {
-        // In a real app, you might want to verify the token with the backend
         setState({
           user: JSON.parse(savedUser),
           token: savedToken, // Include token in state
