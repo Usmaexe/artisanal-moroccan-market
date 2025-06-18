@@ -11,7 +11,14 @@ export default function OrderDetails() {
   const { user } = useAuth();
   const router = useRouter();
   const params = useParams();
-  const orderId = params.orderId as string;
+  const orderId = params?.orderId as string;
+  
+  // Initialize state first
+  const [currentStatus, setCurrentStatus] = useState("Processing");
+  
+  if (!orderId) {
+    return <div>Order not found</div>;
+  }
   
   // Mock order data - in a real app this would come from an API call
   const order = {
@@ -44,14 +51,16 @@ export default function OrderDetails() {
         image: "/images/products/carpet.jpg"
       }
     ],
-    timeline: [
-      { status: "Order Placed", date: "2023-04-14T14:32:00", note: "Order received" },
+    timeline: [      { status: "Order Placed", date: "2023-04-14T14:32:00", note: "Order received" },
       { status: "Payment Confirmed", date: "2023-04-14T14:35:00", note: "Payment processed successfully" },
       { status: "Shipped", date: "2023-04-15T09:23:00", note: "Package shipped via Standard Shipping" }
     ]
   };
 
-  const [currentStatus, setCurrentStatus] = useState(order.status);
+  // Update state with order status
+  if (currentStatus !== order.status) {
+    setCurrentStatus(order.status);
+  }
 
   // Calculate order summary
   const subtotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);

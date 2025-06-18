@@ -1,5 +1,18 @@
 # Artisanal Moroccan Market - E-commerce Platform
 
+## � Project Team
+
+### **Developed by:**
+
+- **ANOU Oussama**
+- **HADIFI Chahid**
+
+### **Supervised by:**
+
+- **Mr. YANN BEN MAISSA**
+
+---
+
 ## 📋 Project Overview
 
 **Artisanal Moroccan Market** is a comprehensive full-stack e-commerce platform dedicated to authentic Moroccan artisanal products. The platform connects local artisans with customers worldwide, showcasing handmade traditional crafts including pottery, textiles, leather goods, metalwork, and more.
@@ -520,8 +533,8 @@ npm run start
 
 ---
 
-## 📄 License & Legal
+## �📄 License & Legal
 
 This project is developed for educational purposes as part of the PFA (Projet de Fin d'Année) curriculum.
 
-**Copyright © 2024 Artisanal Moroccan Market. All rights reserved.**
+**Copyright © 2025 Artisanal Moroccan Market. All rights reserved.**

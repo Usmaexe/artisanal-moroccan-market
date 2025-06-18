@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import FilterBar from "@/components/products/FilterBar";
 import NoProductsFound from "@/components/products/NoProductsFound";
@@ -24,7 +24,7 @@ interface Product {
   isFeatured?: boolean; // Added for featured sorting
 }
 
-export default function ProductsPage() {
+function ProductsContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -251,10 +251,17 @@ export default function ProductsPage() {
             hasFilters={hasFilters}
             onClearFilters={clearFilters}
             searchTerm={searchTerm}
-            categoryFilter={categoryFilter !== "all" ? categoryFilter : undefined}
-          />
+            categoryFilter={categoryFilter !== "all" ? categoryFilter : undefined}          />
         )}
       </div>
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <ProductsContent />
+    </Suspense>
   );
 }

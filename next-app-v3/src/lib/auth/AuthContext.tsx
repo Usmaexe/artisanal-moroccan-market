@@ -269,10 +269,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// FIXED: Modified useAuth to not throw error during build
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   
   if (!context) {
+    // During build/SSR, return default values instead of throwing
+    if (typeof window === 'undefined') {
+      return {
+        user: null,
+        token: null,
+        isLoading: false,
+        error: null,
+        login: async () => {},
+        signup: async () => {},
+        logout: () => {},
+        checkSession: async () => {},
+        updateUser: () => {}
+      };
+    }
+    
     throw new Error("useAuth must be used within an AuthProvider");
   }
   

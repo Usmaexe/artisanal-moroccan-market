@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,7 +26,8 @@ interface Product {
   salePrice?: number;
 }
 
-export default function SearchResults() {
+// Separate the component that uses useSearchParams
+function SearchResultsContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || searchParams.get('search') || '';
   
@@ -39,7 +40,6 @@ export default function SearchResults() {
       setLoading(false);
       return;
     }
-
     const searchProducts = async () => {
       try {
         setLoading(true);
@@ -206,5 +206,20 @@ export default function SearchResults() {
         )}
       </div>
     </div>
+  );
+}
+
+// Main component with Suspense wrapper
+export default function SearchResults() {
+  return (
+    <Suspense fallback={
+      <div className="bg-amber-50 py-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <LoadingSpinner message="Loading search..." size="lg" />
+        </div>
+      </div>
+    }>
+      <SearchResultsContent />
+    </Suspense>
   );
 }
