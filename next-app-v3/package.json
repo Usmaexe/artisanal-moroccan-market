@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build && next export",
+    "postbuild": "rm -rf public && mv out public || (rmdir /s /q public && move out public)",
     "start": "next start",
     "lint": "next lint"
   },
