@@ -17,4 +17,14 @@ app.use('/api', routes);
 // Global error handler (should be last middleware)
 app.use(errorHandler);
 
+// Export the express app for Vercel
 module.exports = app;
+
+// Export handler for serverless
+if (process.env.VERCEL) {
+  module.exports = app;
+} else {
+  app.listen(process.env.PORT || 3000, () => {
+    console.log(`Server listening on port ${process.env.PORT || 3000}`);
+  });
+}
