@@ -36,7 +36,7 @@ export default function ArtisanDashboard() {
         setLoading(true);
         
         // Fetch artisan data
-        const response = await axios.get(`http://localhost:5000/api/artisans/${user?.id}`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/artisans/${user?.id}`);
         setArtisan(response.data);
 
       } catch (err) {

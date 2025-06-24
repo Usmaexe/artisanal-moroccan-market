@@ -47,7 +47,7 @@ export default function ProductPage({ params }: ProductPageProps) {
         setLoading(true);
         
         // Fetch the product
-        const productsResponse = await axios.get(`http://localhost:5000/api/products`);
+        const productsResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         const productData = productsResponse.data.find((p: any) => 
           p.name.toLowerCase().replace(/\s+/g, '-') === slug
         );

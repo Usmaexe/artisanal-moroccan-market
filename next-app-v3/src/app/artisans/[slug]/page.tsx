@@ -28,7 +28,7 @@ export default function ArtisanPage({ params }: ArtisanPageProps) {
         setLoading(true);
         
         // Fetch all products
-        const productsResponse = await axios.get(`http://localhost:5000/api/products`);
+        const productsResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         
         // Find the artisan by slug
         const artisanData = productsResponse.data.find((p: any) => 

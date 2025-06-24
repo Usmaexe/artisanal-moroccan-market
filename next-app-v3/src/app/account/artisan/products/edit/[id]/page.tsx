@@ -53,7 +53,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -108,7 +108,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         inStock: formData.inStock
       };
       
-      await axios.put(`http://localhost:5000/api/products/${id}`, processedData, {
+      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, processedData, {
         headers: {
           Authorization: `Bearer ${token}`
         }

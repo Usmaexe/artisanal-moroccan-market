@@ -43,7 +43,7 @@ function SearchResultsContent() {
     const searchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5000/api/products');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         const allProducts = response.data;
 
         // Transform and filter products

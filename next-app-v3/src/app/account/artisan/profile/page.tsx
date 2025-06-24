@@ -51,7 +51,7 @@ export default function ArtisanProfilePage() {
       
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/artisans/${user.id}`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/artisans/${user.id}`);
         const artisanData = response.data;
         
         setFormData({
@@ -114,7 +114,7 @@ export default function ArtisanProfilePage() {
       const { path } = await response.json();
       
       // Update profile with new image
-      const updateResponse = await axios.put(`http://localhost:5000/api/artisans/${user?.id}`, 
+      const updateResponse = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/artisans/${user?.id}`, 
         { image_url: path },
         {
           headers: {
@@ -154,7 +154,7 @@ export default function ArtisanProfilePage() {
     try {
       // Update artisan-specific fields
       const artisanResponse = await axios.put(
-        `http://localhost:5000/api/artisans/${user?.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/artisans/${user?.id}`,
         {
           name: formData.name,
           bio: formData.bio,

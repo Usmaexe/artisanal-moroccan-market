@@ -55,7 +55,7 @@ export default function NewProductPage() {
     const fetchCategories = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('http://localhost:5000/api/categories');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`);
         
         if (!response.ok) {
           throw new Error(`Failed to fetch categories: ${response.status}`);
@@ -162,7 +162,7 @@ export default function NewProductPage() {
       }
       
       // Make API call to create product with token
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

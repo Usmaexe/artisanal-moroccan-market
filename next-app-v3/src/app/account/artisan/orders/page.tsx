@@ -66,7 +66,7 @@ export default function ArtisanOrders() {
         }
         
         // Fetch all orders with their items and product details
-        const response = await axios.get("http://localhost:5000/api/orders", {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -94,7 +94,7 @@ export default function ArtisanOrders() {
                   // Fetch product details if not already included
                   if (!item.product) {
                     const productResponse = await axios.get(
-                      `http://localhost:5000/api/products/${item.product_id}`,
+                      `${process.env.NEXT_PUBLIC_API_URL}/products/${item.product_id}`,
                       {
                         headers: {
                           'Authorization': `Bearer ${token}`
@@ -151,7 +151,7 @@ export default function ArtisanOrders() {
           artisanOrders.map(async (order: Order) => {
             try {
               const customerResponse = await axios.get(
-                `http://localhost:5000/api/customers/${order.customer_id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/customers/${order.customer_id}`,
                 {
                   headers: {
                     'Authorization': `Bearer ${token}`

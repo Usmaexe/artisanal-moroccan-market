@@ -35,7 +35,7 @@ export default function ArtisanProductsPage() {
     try {
       setLoading(true);
       // Fetch all products
-      const response = await axios.get("http://localhost:5000/api/products");
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`);
       
       // Filter products by artisan_id matching the logged-in user's ID
       const artisanProducts = response.data
@@ -79,7 +79,7 @@ export default function ArtisanProductsPage() {
       }
       
       // Make API call to delete product
-      await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

@@ -9,7 +9,7 @@ interface ProductPageProps {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   try {
-    const response = await axios.get(`http://localhost:5000/api/products?slug=${params.slug}`);
+    const response = await axios.get(`h${process.env.NEXT_PUBLIC_API_URL}/products?slug=${params.slug}`);
     const product = response.data[0];
     
     if (!product) {

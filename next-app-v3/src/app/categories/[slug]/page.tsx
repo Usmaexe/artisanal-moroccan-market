@@ -56,7 +56,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         setError(null);
 
         // Fetch categories
-        const categoriesResponse = await axios.get("http://localhost:5000/api/categories");
+        const categoriesResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/categories`);
         const categoriesData = categoriesResponse.data;
         setCategories(categoriesData);
 
@@ -73,7 +73,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         setCurrentCategory(category);
 
         // Fetch products for this category
-        const productsResponse = await axios.get("http://localhost:5000/api/products");
+        const productsResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         const allProducts = productsResponse.data;
         
         // Filter products by category

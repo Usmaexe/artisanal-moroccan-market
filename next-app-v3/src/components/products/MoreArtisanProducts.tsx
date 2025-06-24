@@ -29,7 +29,7 @@ export default function MoreArtisanProducts({
         console.log('Fetching products for artisan ID:', artisanId);
         console.log('Current product ID to exclude:', currentProductId);
         
-        const response = await axios.get(`http://localhost:5000/api/products`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         console.log('Total products fetched:', response.data.length);
         
         // Filter products by artisan and exclude current product

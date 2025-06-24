@@ -71,7 +71,7 @@ export default function ArtisanOrderDetails() {
         }
         
         // Fetch order details
-        const response = await axios.get(`http://localhost:5000/api/orders/${numericOrderId}`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/orders/${numericOrderId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -94,7 +94,7 @@ export default function ArtisanOrderDetails() {
         
         // Fetch customer details
         const customerResponse = await axios.get(
-          `http://localhost:5000/api/customers/${response.data.customer_id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/customers/${response.data.customer_id}`,
           {
             headers: {
               'Authorization': `Bearer ${token}`
