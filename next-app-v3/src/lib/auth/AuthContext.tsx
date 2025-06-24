@@ -13,7 +13,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { getFromLocalStorage, setToLocalStorage, removeFromLocalStorage } from "./storage";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // Mock users for demo buttons only
 const mockUsers: User[] = [

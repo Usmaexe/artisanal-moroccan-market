@@ -38,7 +38,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
   const fetchReviews = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/reviews`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/reviews`);
       const productReviews = response.data.filter(
         (r: any) => r.product_id === parseInt(productId)
       );
@@ -83,7 +83,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
         headers['Authorization'] = `Bearer ${token}`;
       }
 
-      await axios.post("http://localhost:5000/api/reviews", reviewData, { headers });
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/reviews`, reviewData, { headers });
       
       // Reset form
       setNewReview({ rating: 5, comment: "" });

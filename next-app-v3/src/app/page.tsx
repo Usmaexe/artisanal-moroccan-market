@@ -45,7 +45,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         // Fetch categories
-        const categoriesResponse = await axios.get<ApiCategory[]>("http://localhost:5000/api/categories");
+        const categoriesResponse = await axios.get<ApiCategory[]>(`${process.env.NEXT_PUBLIC_API_URL}/categories`);
         const transformedCategories = categoriesResponse.data.map(category => ({
           id: category.category_id,
           name: category.name,
@@ -54,7 +54,7 @@ export default function Home() {
         }));
 
         // Fetch products (first 4)
-        const productsResponse = await axios.get<ApiProduct[]>("http://localhost:5000/api/products");
+        const productsResponse = await axios.get<ApiProduct[]>(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         const transformedProducts = productsResponse.data.slice(0, 4).map(product => ({
           id: product.product_id,
           name: product.name,

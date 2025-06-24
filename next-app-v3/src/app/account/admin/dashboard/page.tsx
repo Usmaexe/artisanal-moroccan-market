@@ -9,7 +9,7 @@ import { LayoutDashboard, ShoppingBag, Users, Package, Settings, AlertCircle } f
 import axios from "axios";
 
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function AdminDashboard() {
   const { user, token } = useAuth();

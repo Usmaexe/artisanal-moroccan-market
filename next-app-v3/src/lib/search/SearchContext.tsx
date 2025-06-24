@@ -55,7 +55,7 @@ export function SearchProvider({ children }: { children: ReactNode }) {
     const timeoutId = setTimeout(async () => {
       try {
         // Fetch all products from API
-        const response = await axios.get('http://localhost:5000/api/products');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         const allProducts = response.data;
 
         // Transform API data to match our Product interface

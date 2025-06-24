@@ -1,7 +1,7 @@
 import { Artisan } from '@/types';
 
-// API base URL - adjust this to match your backend
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+// API base URL - use env variable only
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // Helper function to get the auth token
 const getAuthToken = (): string | null => {

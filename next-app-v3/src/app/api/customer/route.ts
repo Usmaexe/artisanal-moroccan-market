@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
 // API base URL from environment variable
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+console.log(process.env.NEXT_PUBLIC_API_URL);
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // GET handler to fetch customer data
 export async function GET(request: NextRequest) {

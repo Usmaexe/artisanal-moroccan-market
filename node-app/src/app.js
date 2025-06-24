@@ -8,7 +8,14 @@ const { errorHandler } = require('./middleware/error.middleware');
 const app = express();
 
 // Enable CORS and JSON body parsing
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5000',
+    'https://e-commerce-artisanal-moroccan.vercel.app'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Mount API routes under /api
