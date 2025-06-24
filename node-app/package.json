@@ -4,7 +4,7 @@
   "description": "Backend API for an artisan marketplace platform",
   "main": "src/server.js",
   "scripts": {
-    "build": "echo 'API build complete'",
+    "build": "prisma generate",
     "start": "node src/server.js",
     "dev": "prisma generate && nodemon src/server.js",
     "test": "jest",
