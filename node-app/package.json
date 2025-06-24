@@ -4,15 +4,10 @@
   "description": "Backend API for an artisan marketplace platform",
   "main": "src/server.js",
   "scripts": {
-    "build": "prisma generate",
+    "build": "prisma generate --no-hints",
     "start": "node src/server.js",
     "dev": "prisma generate && nodemon src/server.js",
-    "test": "jest",
-    "postinstall": "prisma generate",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio",
-    "prisma:seed": "node prisma/seed.js"
+    "postinstall": "prisma generate --no-hints"
   },
   "keywords": [
     "artisan",
