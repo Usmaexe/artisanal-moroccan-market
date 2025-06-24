@@ -7,13 +7,27 @@ const { errorHandler } = require('./middleware/error.middleware');
 
 const app = express();
 
-// Enable CORS and JSON body parsing
+// Enhanced CORS setup for all routes and preflight
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5000',
+  'https://e-commerce-artisanal-moroccan.vercel.app'
+];
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5000',
-    'https://e-commerce-artisanal-moroccan.vercel.app'
-  ],
+  origin: allowedOrigins,
   credentials: true
 }));
 app.use(express.json());
